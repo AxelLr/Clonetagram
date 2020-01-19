@@ -1,0 +1,5 @@
+export const AUTHENTICATED = 'AUTHENTICATED'
+export const SET_ERRORS = 'SET_ERRORS'
+export const LOADING = 'LOADING'
+export const LOADED = 'LOADED'
+export const CLEAR_ERRORS = 'CLEAR_ERRORS'
