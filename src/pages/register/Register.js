@@ -37,7 +37,7 @@ const handleSubmit = (e) => {
 if(values.password === values.confirmPassword) {
 
   e.preventDefault()
-  dispatch(registerUser(values))
+  dispatch(registerUser(values, props.history))
 } else {
 
   e.preventDefault()

@@ -12,7 +12,7 @@ export default function (state = initialState, action) {
         case AUTHENTICATED:
             return {
                 ...state,
-                authenticated: false
+                authenticated: true
             }
         case SET_ERRORS: 
             return {

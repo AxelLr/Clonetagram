@@ -30,8 +30,7 @@ export function registerUser(values, history) {
                 dispatch({ type: AUTHENTICATED })
                 dispatch(getConnectedUser())
                 dispatch({type: CLEAR_ERRORS})
-                
-                // history.push('/Home')
+                history.push('/Home')
             } catch (err) {
                 console.log(err.response.data.errors)
                 dispatch({ type: SET_ERRORS, payload: err.response.data.errors })   
