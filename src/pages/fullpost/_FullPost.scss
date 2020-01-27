@@ -1,0 +1,14 @@
+.fullPost-container { 
+    height: 100vh;
+    min-height: 600px;
+    background: #e5e5e5;
+    display: flex;
+}
+
+.fullPost-content-container {
+    height: 90%;
+    margin: auto;
+    display: flex;
+    width: 90%;
+   justify-content: center;
+}

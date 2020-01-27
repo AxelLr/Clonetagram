@@ -46,20 +46,21 @@ if(values.password === values.confirmPassword) {
   
  }
     return (
-      <div className='register-container'>
+      <div className='login-container'>
 
-            <Typography variant='h3'>
-              Regístrate!
-            </Typography>
 
           <form onSubmit={handleSubmit}>
+            
+          <Typography variant='h3'>
+              Regístrate!
+            </Typography>
             <TextField
               error={errors.email ? true : false}
               required
               id='email'
               name='email'
               type='email'
-              label={errors ? errors.email : "Email"}
+              label={errors ? errors.email : 'Email'}
               value={values.email}
               onChange={handleChange}
               fullWidth
@@ -71,7 +72,7 @@ if(values.password === values.confirmPassword) {
               id='password'
               name='password'
               type='password'
-              label={errors.password ? errors.password : "Contraseña"}
+              label={errors.password ? errors.password : 'Contraseña'}
               value={values.password}
               onChange={handleChange}
               fullWidth
@@ -82,10 +83,10 @@ if(values.password === values.confirmPassword) {
               required
               error={errors.confirmPassword ? true : false}
               inputProps={{ minLength: 6, maxLength: 20 }}
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              label={errors.confirmPassword ? errors.confirmPassword : "Confirmar contraseña"}
+              id='confirmPassword'
+              name='confirmPassword'
+              type='password'
+              label={errors.confirmPassword ? errors.confirmPassword : 'Confirmar contraseña'}
               value={values.confirmPassword}
               onChange={handleChange}
               fullWidth
@@ -93,23 +94,23 @@ if(values.password === values.confirmPassword) {
              <TextField
              inputProps={{ minLength: 4, maxLength: 20 }}
               error={errors.username ? true : false}
-              id="username"
-              name="username"
-              type="text"
-              label={errors ? errors.username : "Nombre"}
+              id='username'
+              name='username'
+              type='text'
+              label={errors ? errors.username : 'Nombre completo'}
               value={values.username}
               onChange={handleChange}
-              helperText="Todos veran tu nombre"
+              helperText='Todos veran tu nombre'
               fullWidth
               required
             />
-            {/* {props.UI.errors.general && <h4 style={{color: 'red', margin: 5}}> {props.UI.errors.general} </h4>} */}
+           
             <Button
               disabled={loading}
-              type="submit"
-              variant="contained"
-              color="secondary"
-              style={{margin: '25px auto 25px auto'}}
+              type='submit'
+              variant='contained'
+              color='secondary'
+              style={{margin: '25px auto 25px auto', background: '#046B86'}}
             >
             Registrarse!
 
@@ -120,7 +121,7 @@ if(values.password === values.confirmPassword) {
             <br />
        
             <small>
-            Tienes una cuenta? <Link to="/LogIn"> Inicia sesión </Link>
+            Tienes una cuenta? <Link  style={{textDecoration: 'none', color: '#046B86'}} to='/'> Inicia sesión </Link>
             </small>
           </form>
       </div>

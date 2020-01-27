@@ -1,3 +1,14 @@
+@import './pages/home/Home';
+@import './pages/profile/Profile';
+@import './components/loggeduser/LoggedUser';
+@import './components/posts/Posts';
+@import './components/posts/postsnavbar/PostsNavbar';
+@import './components/posts/allposts/AllPosts';
+@import './components/posts/addpost/AddPost';
+@import './pages/fullpost/FullPost';
+@import './components/posts/profileposts/ProfilePosts';
+@import './pages/login/Login';
+@import './pages/notfound/NotFound';
 
 *{
   box-sizing:border-box;

@@ -1,6 +1,6 @@
-import { AUTHENTICATED, SET_ERRORS, LOADING, LOADED } from './types'
+import { AUTHENTICATED, SET_ERRORS, LOADING, LOADED, USER_LOGGED, UNAUTHENTICATED, CLEAR_ERRORS } from './types'
 
-const initialState= {
+const initialState = {
     loggedUser: {},
     authenticated: false,
     loading: false,
@@ -29,6 +29,24 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: false
             }
+        case USER_LOGGED: {
+            return {
+                ...state,
+                loggedUser: { ...action.payload }
+            }
+        }
+        case UNAUTHENTICATED: {
+            return {
+                ...state,
+                authenticated: false
+            }
+        }
+        case CLEAR_ERRORS: {
+            return {
+                ...state,
+                errors: ''
+            }
+        }
         default: return state
     }
 }

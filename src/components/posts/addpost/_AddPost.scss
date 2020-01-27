@@ -1,0 +1,22 @@
+.add-post-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    svg {
+        color: #046B86;
+        font-size: 100px;
+        margin: 15px;
+        cursor: pointer;
+     
+        &:hover {
+            animation: jump .2s ease-out;
+        }
+    }
+}
+
+@keyframes jump {
+    0% {transform: translateY(0) }
+    50%  { transform: translateY(-10px) }
+    100% { transform: translateY(0px) }
+}
