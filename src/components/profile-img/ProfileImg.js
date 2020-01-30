@@ -3,6 +3,7 @@ import React,{Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { editProfileImage } from '../../redux/actions/UserActions'
 // MUI 
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -14,6 +15,7 @@ export default function ProfileImg(props) {
     const { user_id, connectedUser } = props
 
     const [ open, setOpen ] = useState(false)
+    const [ loading, setLoading ] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -26,8 +28,9 @@ export default function ProfileImg(props) {
         console.log(formData)
    
         if(formData) {
-            dispatch(editProfileImage(formData, user_id))
-            setOpen(false)    
+            setLoading(true)
+            dispatch(editProfileImage(formData, setLoading))
+            setOpen(false)
         }
     }
 
@@ -41,8 +44,11 @@ export default function ProfileImg(props) {
         
         <div>
             {connectedUser === user_id ?
-            < Fragment> 
-            <img src={props.src} alt='profile' width={170} height={170} onClick={() => setOpen(true)} style={{cursor: 'pointer'}}/>
+            < Fragment>
+            { loading ? <CircularProgress style={{}} size={130} />            
+            : 
+            <img src={props.src} alt='profile' width={170} height={170} onClick={() => setOpen(true)} style={{cursor: 'pointer'}}/> } 
+            
             <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm" >
                 <DialogTitle> Cambiar foto de perfil </DialogTitle>
 
@@ -53,7 +59,7 @@ export default function ProfileImg(props) {
                         type='file' placeholder='select an image' onChange={selectFile} />
                         
                         <Button onClick={pickFile} variant='outlined' color="primary">
-                            Subir Foto
+                            Subir Foto 
                         </Button>
 
                     </form>

@@ -18,7 +18,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 export default function AddPost() {
 
     const dispatch = useDispatch()
-    const loading  = useSelector(state => state.UI.loading)
+    const uploading  = useSelector(state => state.UI.uploading)
     const stateErrors = useSelector(state => state.UI.errors)
 
     const [ file, setFile ] = useState('')
@@ -28,7 +28,6 @@ export default function AddPost() {
     const [errors, setErrors ] = useState('')
 
     useEffect(() => {
-        console.log('working')
         setErrors(stateErrors)
     }, [stateErrors])
     
@@ -46,11 +45,19 @@ export default function AddPost() {
     const pickFile = (e) => {
         e.preventDefault()
         dispatch({type: CLEAR_ERROR})
-        setErrors('')
+        setErrors(' ')
         const button = document.getElementById('file-input')
         button.click()
     }
     
+    const handleOpen = () => {
+        setOpen(true)
+        setImage('')
+        setContent('')
+        setErrors('')
+        dispatch({type: CLEAR_ERROR})
+    }
+
     const handleClose = () => {
         setOpen(false)
         setImage('')
@@ -58,6 +65,7 @@ export default function AddPost() {
         setErrors('')
         dispatch({type: CLEAR_ERROR})
     }
+    
     const uploadPost = () => {
 
         if(image) {
@@ -65,21 +73,22 @@ export default function AddPost() {
             formData.append('image', file, file.name) 
             formData.append('description', content) 
            dispatch(newPost(formData))
+           setErrors('')
         } else {
             setErrors('Debes seleccionar una imágen primero')
         }
     }
 
     useEffect(() => {
-        if(!loading && !errors) {
+        if(!uploading && !errors) {
             setOpen(false)
         }
-       }, [loading, errors])
+       }, [uploading, errors])
 
     return (
         <div className='add-post-container' placement='top'>
             <ToolTip  title='Nuevo Post'> 
-                < AddBoxIcon onClick={() => setOpen(true)} />
+                < AddBoxIcon onClick={handleOpen} />
             </ToolTip>
 
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" >
@@ -114,8 +123,8 @@ export default function AddPost() {
                 </DialogContent>
 
                 <DialogActions>
-            <Button disabled={loading} onClick={uploadPost} variant='contained' color="primary">
-              Publicar!     { loading && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
+            <Button disabled={uploading} onClick={uploadPost} variant='contained' color="primary">
+              Publicar!     { uploading && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
             </Button>
             <Button onClick={handleClose} variant='contained' style={{backgroundColor: 'red'}} color="secondary">
               Cancelar

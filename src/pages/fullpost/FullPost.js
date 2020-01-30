@@ -49,7 +49,9 @@ export default function FullPost(props) {
         
         : 
            <div className='fullPost-content-container'>
-                  <Post post={selectedPost} />
+                <div style={{width: '50%', height: '100%'}}>
+                     <Post post={selectedPost} />
+                </div>
                   < CommentsList comments={comments} selectedPost={selectedPost} /> 
             </div> }
          

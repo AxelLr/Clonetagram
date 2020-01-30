@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // REDUX
 import { addUserDetails } from '../../redux/actions/UserActions'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // MUI
 import ToolTip from '@material-ui/core/Tooltip'
 import EditIcon from '@material-ui/icons/Edit'
@@ -15,11 +15,11 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 export default function EditDetails(props) {
 
     const dispatch = useDispatch()
-    const loading = useSelector(state => state.UI.loading)
 
-    const { description, user_id } = props
+    const { description } = props
     console.log(description)
 
+    const [ loading, setLoading ] = useState(false)
     const [ open, setOpen ] = useState(false)
     const [ details, setDetails ] = useState('')
     const [ errors, setErrors ] = useState('')
@@ -41,7 +41,8 @@ export default function EditDetails(props) {
         if(details.trim() === '') {
             setErrors('No debe estar vacío')
         }
-        dispatch(addUserDetails(details, user_id))
+        setLoading(true)
+        dispatch(addUserDetails(details, setLoading))
     }
 
     const handleOpen = () => {

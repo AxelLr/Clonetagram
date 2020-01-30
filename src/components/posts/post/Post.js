@@ -48,8 +48,8 @@ export default function Post(props) {
   const classes = useStyles()
  
   return (
-  <div style={{objectFit: 'cover', minWidth: 400}}>  
-    <Card elevation={8} style={{height: '100%', overflow: 'auto'}}>
+   
+    <Card elevation={8} style={{objectFit: 'cover'}}>
       <CardHeader
         avatar={
           <Avatar aria-label='profile-pic' className={classes.avatar}>
@@ -65,10 +65,10 @@ export default function Post(props) {
         subheader={moment(date).format('LLL')}
       />
 
-      <img src={imageURL} height={450} width={'100%'} alt='Post' /> 
+      <img src={imageURL} height={350} width={'100%'} alt='Post' /> 
 
-      <CardContent>
-        <Typography variant='h6' color='textSecondary' component='p' style={{minHeight: 40, maxHeight: 40}}>
+      <CardContent style={{margin: '15px 0px 0px 15px', padding: 0}}>
+        <Typography color='textSecondary' component='p' style={{minHeight: 20, maxHeight: 20}}>
         { description }
         </Typography>
 
@@ -84,6 +84,6 @@ export default function Post(props) {
         </Link>
       </CardActions>
     </Card>
-  </div>
+  
   )
 }

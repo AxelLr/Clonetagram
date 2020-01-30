@@ -2,9 +2,10 @@ import { CLEAN_POSTS, GET_ALL_POSTS, SET_SELECTED_PROFILE,
          SET_SELECTED_POSTS, SET_NEW_POST, DELETE_POST,
          DATA_LOADING, DATA_LOADED, SET_SUBSCRIPTIONS_POSTS, 
          SET_USERS, SET_POST, SET_REPLYS, SET_LIKES,
-         SET_POST_COMMENTS, SET_DISLIKE } from './types'
+         SET_POST_COMMENTS, SET_DISLIKE, SET_FOLLOWED_USER } from './types'
 
 const initialState = {
+    numberOfPosts : '',
     allPosts: [],
     loading: false,
     selectedProfile: {},
@@ -19,8 +20,9 @@ export default function (state = initialState, action) {
         case GET_ALL_POSTS:
             return {
                 ...state,
-                allPosts: [...action.payload ],
-                selectedPost: {}
+                allPosts: [...action.payload.posts ],
+                selectedPost: {},
+                numberOfPosts: action.payload.numberOfPosts
             }
         case SET_SELECTED_PROFILE: 
             return {
@@ -56,7 +58,6 @@ export default function (state = initialState, action) {
                 loading: false
         }
         case SET_SUBSCRIPTIONS_POSTS: 
-            console.log(action.payload)
             return {
                 ...state,
                 allPosts: [...action.payload]
@@ -109,7 +110,12 @@ export default function (state = initialState, action) {
                  return post;
              }),
              selectedPost: {...state.selectedPost, likes: [...action.payload.likes]}
-            }            
+            }
+        case SET_FOLLOWED_USER:
+            return {
+                ...state,
+                selectedProfile: {...action.payload}
+            }  
         default: return state
     }
 }

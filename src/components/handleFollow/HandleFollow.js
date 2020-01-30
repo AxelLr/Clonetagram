@@ -15,7 +15,7 @@ export default function HandleFollow(props) {
 
    const dispatch = useDispatch()
    const [isFollowed, setIsFollowed] = useState()
-   const loading = useSelector(state => state.user.loading)
+   const loadingSubscription = useSelector(state => state.UI.loadingSubscription)
 
    useEffect(() => {
 
@@ -29,21 +29,21 @@ export default function HandleFollow(props) {
     }
 
    const handleUnfollow = () => {
-     dispatch(unfollowUser((user_id )))
+     dispatch(unfollowUser((user_id)))
     }
 
     return (
         <div>
             { isFollowed ? 
             
-            <Button disabled={loading} onClick={handleUnfollow} style={{marginLeft: 10}} variant='contained' 
-            color='primary' size='small' > Siguiendo { loading && <CircularProgress style={{marginLeft: 5}} size={20} /> } 
+            <Button disabled={loadingSubscription} onClick={handleUnfollow} style={{marginLeft: 10}} variant='contained' 
+            color='primary' size='small' > Siguiendo { loadingSubscription && <CircularProgress style={{marginLeft: 5}} size={20} /> } 
             </Button> 
             
             : 
 
-            <Button disabled={loading} onClick={handleFollow} style={{marginLeft: 10}} variant='contained' 
-            size='small' > Seguir { loading && <CircularProgress style={{marginLeft: 5}} size={20} /> }  
+            <Button disabled={loadingSubscription} onClick={handleFollow} style={{marginLeft: 10}} variant='contained' 
+            size='small' > Seguir { loadingSubscription && <CircularProgress style={{marginLeft: 5}} size={20} /> }  
             </Button> }
         </div>
     )

@@ -38,7 +38,7 @@ export default function UserList(props) {
   
         {open ? <ExpandLess /> : <ExpandMore />}
   
-      <Collapse in={open} timeout="auto" unmountOnExit style={{position: 'absolute', transform: 'translateY(20px)', }}  >
+      <Collapse in={open} timeout="auto" unmountOnExit style={{position: 'absolute', transform: 'translateY(20px)' }}  >
         <Paper  > 
         <List style={{maxHeight: 500, width: 210, overflowY: 'auto' }}
         component="nav"
@@ -68,5 +68,5 @@ export default function UserList(props) {
          </Paper>
       </Collapse>
       </Fragment>
-  );
+  )
 }

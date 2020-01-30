@@ -17,7 +17,7 @@ export default function (state = initialState, action) {
         case SET_ERRORS: 
             return {
                 ...state,
-                errors: action.payload
+                errors: action.payload 
             }
         case LOADING: 
             return {

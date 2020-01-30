@@ -16,14 +16,14 @@ export default function DeletePost(props) {
 
     const [open, setOpen] = useState(false)
 
-    const loading = useSelector(state => state.UI.loading)
+    const deleting = useSelector(state => state.UI.deleting)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(!loading ) {
+        if(!deleting ) {
             setOpen(false)
         }
-       }, [loading])
+       }, [deleting])
 
     const handleDelete = () => {
         dispatch(deletePost(props.post_id))
@@ -41,8 +41,8 @@ export default function DeletePost(props) {
                 <DialogTitle> Estas Seguro de que quieres borrar esta publicacíon ? </DialogTitle>
 
                 <DialogActions>
-                    <Button disabled={loading} onClick={handleDelete} variant='contained' color="primary">
-                    Si { loading && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
+                    <Button disabled={deleting} onClick={handleDelete} variant='contained' color="primary">
+                    Si { deleting && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
                     </Button>
                     <Button onClick={() => setOpen(false)} variant='contained' color="secondary">
                     Cancelar

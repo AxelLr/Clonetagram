@@ -1,8 +1,9 @@
 import React,{ useEffect } from 'react'
 import Post from '../post/Post'
+import Pagination from '../../../components/pagination/Pagination'
+// REDUX
 import { getAllPosts, getSubscriptionsPosts } from '../../../redux/actions/DataActions'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLEAN_POSTS } from '../../../redux/reducers/types'
 // MUI 
 import CircularProgress from '@material-ui/core/CircularProgress'
 
@@ -21,18 +22,24 @@ export default function AllPosts(props) {
      } else {
         dispatch(getAllPosts())
      }
-        
-    return () => {
-        dispatch({type: CLEAN_POSTS })
-    }
 
  }, [dispatch, handlePosts])
 
     return (
-        <div> 
-        { loading ? <div style={{display: 'flex', width: '100%', height: '100vh'}}> <CircularProgress style={{margin: 'auto'}} size={60} /> </div> : <div className={handlePosts ? 'allPosts-container' : 'allPosts-container-dos'}>
-            { allPosts.map((post, key) => < Post key={key} post={post} />) } 
-            </div> }
+        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}} >
+         <div> 
+         <div> { !handlePosts && <Pagination /> } </div>     
+         </div>
+        { loading ? 
+
+        <div style={{display: 'flex', width: '100%', height: '100vh'}}> 
+            <CircularProgress style={{margin: 'auto'}} size={60} /> 
+        </div> : 
+
+        <div className={handlePosts ? 'allPosts-container' : 'allPosts-container-dos'}>
+            { allPosts.map((post, key) => < Post key={key} post={post} />) }
+        </div> }
+       
         </div>
     )
 }

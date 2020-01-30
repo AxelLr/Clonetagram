@@ -22,6 +22,8 @@ const errors = useSelector(state => state.user.errors)
 const loading = useSelector(state => state.user.loading)
 const [values, setValues] = useState(initialState)
 
+console.log(errors)
+
 const handleChange = (e) => {
   setValues({
     ...values,
@@ -70,13 +72,13 @@ const handleSubmit = (e) =>
               label='Contraseña'
     
             />
-            { errors && <p style={{color: 'red', fontFamily: 'Open Sans'}}> {errors.msg} </p>  }
+            { errors && <p style={{color: 'red', fontFamily: 'Open Sans'}}> {errors[0].msg} </p>  }
             <Button
               disabled={loading}
               type="submit"
               variant="contained"
               color="primary"
-              style={{margin: '25px auto 25px auto', background: '#046B86'}}
+              style={{margin: '25px auto 25px auto'}}
             >
             Ingresar!
 

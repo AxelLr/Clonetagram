@@ -1,5 +1,6 @@
 import { GET_ALL_POSTS, SET_SELECTED_POSTS, SET_NEW_POST, DELETE_POST, SET_SUBSCRIPTIONS_POSTS,
-     SET_USERS, SET_POST_COMMENTS, SET_POST, SET_LIKES, SET_DISLIKE, SET_LOADING, SET_LOADED, SET_ERROR, SET_REPLYS } from '../reducers/types'
+     SET_USERS, SET_POST_COMMENTS, SET_POST, SET_LIKES, SET_DISLIKE, SET_LOADING,
+     SET_LOADED, SET_ERROR, SET_REPLYS, UPLOADING, UPLOADED, DELETING, DELETED } from '../reducers/types'
 import axios from 'axios'
 
 export function getAllPosts() {
@@ -8,6 +9,21 @@ export function getAllPosts() {
         try {
             dispatch({type: SET_LOADING})
             const response = await axios.get('/posts')
+            dispatch( {type: GET_ALL_POSTS, payload: response.data} )
+            dispatch({type: SET_LOADED})
+            console.log(response)
+            
+        } catch (err) {
+            console.log(err)            
+        }
+    }
+}
+
+export function getPostsFromPage (page) {
+    return async function(dispatch) {
+        try {
+            dispatch({type: SET_LOADING})
+            const response = await axios.get(`/posts/?page=${page}`)
             dispatch( {type: GET_ALL_POSTS, payload: response.data} )
             dispatch({type: SET_LOADED})
             
@@ -36,17 +52,18 @@ export function newPost(data) {
     return async function(dispatch) {
 
         try {  
-                dispatch({type: SET_LOADING })
+                dispatch({type: UPLOADING })
                 const response =  await axios.post('/posts/add', data, { headers: {
                      'content-type': 'multipart/form-data' 
-                }})         
+                     }
+                })         
                 console.log(response.data)
-                dispatch({type: SET_LOADED})
+                dispatch({type: UPLOADED})
                 dispatch({ type: SET_NEW_POST, payload: response.data })
 
         } catch (err) {
             dispatch({type: SET_ERROR, payload: err.response.data}) 
-            dispatch({type: SET_LOADED})      
+            dispatch({type: UPLOADED})      
         }
     }
 }
@@ -55,10 +72,10 @@ export function deletePost(postid) {
     return async function(dispatch) {
 
         try {
-            dispatch({type: SET_LOADING })
+            dispatch({type: DELETING })
             await axios.delete(`/posts/${postid}/delete`)
             dispatch({ type: DELETE_POST, payload: postid })
-            dispatch({type: SET_LOADED })
+            dispatch({type: DELETED })
             
         } catch (err) {
             console.log(err)
@@ -70,11 +87,8 @@ export function deletePost(postid) {
      return async function(dispatch) {
 
          try {
-             dispatch({type: SET_LOADING })  
-           const response = await axios.get('/posts/user/subscriptions')
-
-           console.log(response.data)
-           
+           dispatch({type: SET_LOADING })  
+           const response = await axios.get('/posts/user/subscriptions')           
            dispatch({type: SET_SUBSCRIPTIONS_POSTS, payload: response.data})
            dispatch({type: SET_LOADED })  
             
@@ -84,14 +98,13 @@ export function deletePost(postid) {
      }
  }
 
-export function getAllUsers () {
+export function getAllUsers (search) {
     return async function(dispatch) {
         try {
-           const response =  await axios.get('/users')
+           const response =  await axios.get(`/users/?search=${search}`)
            console.log(response.data) 
            dispatch({ type: SET_USERS, payload: response.data })
 
- 
         } catch (err) {
             console.log(err)
         }
@@ -119,7 +132,6 @@ export function getPostComments(id) {
         try {
             const response = await axios.get(`/comments/${id}`)
             dispatch({ type: SET_POST_COMMENTS, payload: response.data})
-            console.log(response.data)
 
         } catch (err) {
 
@@ -128,15 +140,16 @@ export function getPostComments(id) {
     }
 }
 
-export function addComment(content, id) {
+export function addComment(content, id, setLoading) {
     return async function(dispatch) {
+        
         try {
 
-            await axios.post(`/comments/${id}`, content)
-             dispatch(getPostComments(id))
-            
-        } catch (err) {
+            const response = await axios.post(`/comments/${id}`, content)
+            dispatch({ type: SET_POST_COMMENTS, payload: response.data})
+            setLoading(false)
 
+        } catch (err) {
             console.log(err)
         }
     }
@@ -196,4 +209,3 @@ export function dislikeAPost(post_id) {
         }
     }
 }
-

@@ -68,22 +68,16 @@ export default function SearchAppBar(props) {
 
  const usersList = useSelector(state => state.data.usersList)
 
-
  const [open, setOpen] = useState(false)
  const [filter, setFilter] = useState('')
  const [searchResults, setSearchResults] = useState([])
+ const [typingTimeout, setTypingTimeOut ] = useState(0)
 
  const dispatch = useDispatch()
-
 
  const classes = useStyles()
 
  const { handlePosts, setHandlePosts } = props
-
- const handleUserSearch = () => {
-  setOpen(true)
-  dispatch(getAllUsers())
- }
 
  useEffect(() => {
   const results = usersList.filter(user =>
@@ -93,7 +87,13 @@ export default function SearchAppBar(props) {
 }, [filter, usersList]);
 
  const handleFilter = (e) => {
+
+  if(typingTimeout) clearTimeout(typingTimeout)
+ 
   setFilter(e.target.value)
+  setOpen(true)
+  setTypingTimeOut(setTimeout( () => dispatch(getAllUsers(filter)), 1000))
+
  }
  
   return (
@@ -115,10 +115,10 @@ export default function SearchAppBar(props) {
                 <div className={classes.searchIcon}>
                 <SearchIcon />
                 </div>
-                <InputBase
+                <InputBase             
                 onChange={handleFilter}
                 value={filter}
-                onFocus={handleUserSearch}
+                onFocus={handleFilter}
                 onBlur={() => setOpen(false)}
                 placeholder="Buscar..."
                 classes={{

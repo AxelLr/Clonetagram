@@ -12,20 +12,25 @@ const useStyles = makeStyles(theme => ({
       width: '100%'
     },
   },
+  input: {
+    background: '#181818'
+  }
 }));
 
 export default function AddComment(props) {
 
 const dispatch = useDispatch()
 
+const [loading, setLoading ] = useState(false)
 const [content, setContent] = useState('')
 const classes = useStyles()
 
 const handleComment = (e) => {
     e.preventDefault()
    if(content) {
-     console.log(content)
-    dispatch(addComment({ content }, props.selectedPost._id ))  
+    setLoading(true)
+    console.log(content)
+    dispatch(addComment({ content }, props.selectedPost._id, setLoading ))  
     setContent('')  
    }   
 }
@@ -34,7 +39,9 @@ const handleComment = (e) => {
     <form  className={classes.root} noValidate autoComplete="off">
 
                 <TextField
-                    tpye="text"
+                    className={loading && classes.input}
+                    disabled={loading}
+                    type="text"
                     label="Añade un comentario"
                     rows="2"
                     variant='filled'

@@ -17,8 +17,6 @@ export default function HandleLikes(props) {
 
     const liked = connectedUser && likes && likes.filter(like => like.user === connectedUser._id).length > 0 ? true : false
 
-    console.log(liked)
-
        const handleLike = () => {
         dispatch(likeAPost(_id))
     }

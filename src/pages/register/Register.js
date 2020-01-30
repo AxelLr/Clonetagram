@@ -39,7 +39,7 @@ if(values.password === values.confirmPassword) {
   e.preventDefault()
   dispatch(registerUser(values, props.history))
 } else {
-
+  
   e.preventDefault()
   dispatch({type: SET_ERRORS, payload: { confirmPassword: 'Las contraseñas deben coincidir' }})
 }
@@ -60,7 +60,8 @@ if(values.password === values.confirmPassword) {
               id='email'
               name='email'
               type='email'
-              label={errors ? errors.email : 'Email'}
+              label='E-mail'
+              helperText={errors && errors.email}
               value={values.email}
               onChange={handleChange}
               fullWidth
@@ -72,9 +73,10 @@ if(values.password === values.confirmPassword) {
               id='password'
               name='password'
               type='password'
-              label={errors.password ? errors.password : 'Contraseña'}
+              label='Contraseña'
               value={values.password}
               onChange={handleChange}
+              helperText={errors && errors.password}
               fullWidth
               required
     
@@ -86,9 +88,10 @@ if(values.password === values.confirmPassword) {
               id='confirmPassword'
               name='confirmPassword'
               type='password'
-              label={errors.confirmPassword ? errors.confirmPassword : 'Confirmar contraseña'}
+              label= 'Confirmar contraseña'
               value={values.confirmPassword}
               onChange={handleChange}
+              helperText={errors.confirmPassword && errors.confirmPassword}
               fullWidth
             />
              <TextField
@@ -97,10 +100,10 @@ if(values.password === values.confirmPassword) {
               id='username'
               name='username'
               type='text'
-              label={errors ? errors.username : 'Nombre completo'}
+              label= 'Nombre completo (todos veran tu nombre)'
               value={values.username}
               onChange={handleChange}
-              helperText='Todos veran tu nombre'
+              helperText={errors && errors.username}
               fullWidth
               required
             />
@@ -109,8 +112,8 @@ if(values.password === values.confirmPassword) {
               disabled={loading}
               type='submit'
               variant='contained'
-              color='secondary'
-              style={{margin: '25px auto 25px auto', background: '#046B86'}}
+              color='primary'
+              style={{margin: '25px auto 25px auto' }}
             >
             Registrarse!
 
