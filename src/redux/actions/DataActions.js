@@ -48,7 +48,7 @@ export function getUserPosts(id) {
     }
 }
 
-export function newPost(data) {
+export function newPost(data, setOpen) {
     return async function(dispatch) {
 
         try {  
@@ -59,7 +59,9 @@ export function newPost(data) {
                 })         
                 console.log(response.data)
                 dispatch({type: UPLOADED})
+                setOpen(false)
                 dispatch({ type: SET_NEW_POST, payload: response.data })
+
 
         } catch (err) {
             dispatch({type: SET_ERROR, payload: err.response.data}) 

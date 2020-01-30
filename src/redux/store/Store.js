@@ -1,4 +1,4 @@
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import userReducer from '../reducers/userReducer'
 import dataReducer from '../reducers/DataReducer'
 import UIReducer from '../reducers/UIReducer'
@@ -10,9 +10,6 @@ const reducers = combineReducers ({
     UI: UIReducer
 })
 
-const Store = createStore(reducers, compose(
-    applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
-  ))
+const Store = createStore(reducers, applyMiddleware(thunk))
 
  export default Store

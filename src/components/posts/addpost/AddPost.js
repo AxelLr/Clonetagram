@@ -44,7 +44,6 @@ export default function AddPost() {
 
     const pickFile = (e) => {
         e.preventDefault()
-        dispatch({type: CLEAR_ERROR})
         setErrors(' ')
         const button = document.getElementById('file-input')
         button.click()
@@ -72,18 +71,12 @@ export default function AddPost() {
             let formData = new FormData()
             formData.append('image', file, file.name) 
             formData.append('description', content) 
-           dispatch(newPost(formData))
+           dispatch(newPost(formData, setOpen))
            setErrors('')
         } else {
             setErrors('Debes seleccionar una imágen primero')
         }
     }
-
-    useEffect(() => {
-        if(!uploading && !errors) {
-            setOpen(false)
-        }
-       }, [uploading, errors])
 
     return (
         <div className='add-post-container' placement='top'>

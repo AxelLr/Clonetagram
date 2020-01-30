@@ -3,7 +3,7 @@ import { AUTHENTICATED, UNAUTHENTICATED, SET_ERRORS, LOADING, LOADED,
       LOADING_SUB, LOADED_SUB, SET_FOLLOWED_USER, LOADING_PROFILE, PROFILE_LOADED } from '../reducers/types'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://clonetagram.herokuapp.com/api'
+axios.defaults.baseURL = 'http://localhost:5000/api'
 
 //SET TOKEN IN LOCALSTORAGE
 const setToken = (token) => {
