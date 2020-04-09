@@ -1,0 +1,30 @@
+.pagination-container {
+    text-align: center;
+    bottom: 0;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+    padding: 4px;
+    
+    span {
+        font-family: 'Open Sans';
+        font-weight: bold;
+        font-size: 20px;
+        transition: .3s;
+        border-radius: 4px;
+        padding: 5px 10px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #EAEAEA;
+        }
+    }
+}
+
+.selected-page {
+    background: #4CAF50;
+    color: white;
+}
+

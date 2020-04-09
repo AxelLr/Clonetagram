@@ -1,6 +1,6 @@
 import React,{ useState } from 'react'
 // REDUX
-import { addReply } from '../../../redux/actions/DataActions'
+import { addReply } from '../../../redux/actions/CommentsActions'
 import { useDispatch } from 'react-redux'
 // MUI
 import { makeStyles } from '@material-ui/core/styles'

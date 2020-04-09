@@ -1,0 +1,17 @@
+.profilePosts-grid {
+    width: 100%;
+    padding: 50px;
+    display: grid;
+    column-gap: 10px;
+    row-gap: 20px;
+    grid-template: {
+        columns: repeat(auto-fill, minmax(400px, 1fr));
+        rows: repeat(auto, .5fr); 
+    }  
+
+}
+
+.profilePosts-container {
+    min-height: 300px;
+    background-color: #e5e5e5;
+}

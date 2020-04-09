@@ -1,25 +1,68 @@
 @import './pages/home/Home';
 @import './pages/profile/Profile';
-@import './components/loggeduser/LoggedUser';
-@import './components/posts/Posts';
-@import './components/posts/postsnavbar/PostsNavbar';
-@import './components/posts/allposts/AllPosts';
-@import './components/posts/addpost/AddPost';
+@import './pages/home/components/posts/Posts';
+@import './components/addpost/AddPost';
 @import './pages/fullpost/FullPost';
-@import './components/posts/profileposts/ProfilePosts';
+@import './pages/profile/components/profile-posts/ProfilePosts';
 @import './pages/login/Login';
 @import './pages/notfound/NotFound';
-@import './components/pagination/Pagination';
+@import './pages/home/components/posts/components/all-posts/pagination/Pagination';
 
 *{
   box-sizing:border-box;
 }
-
 body {
   padding: 0;
   margin: 0;
   height: 100%;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+// AUTHENTICATION FORM STYLES
+.form-container {
+  height: 100vh;
+  display: flex;
+  background-color: #e5e5e5;
+}
+.form-card {
+  margin: auto;
+  height: 85%;
+  width: 60%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.form {
+  padding: 10px;
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  }
+.auth-image {
+  height: 100%;
+  width: 60%;
+  object-fit: cover;
+}
+.auth-p {
+  font-family: 'Open Sans';
+  font-size: 14px;
+  align-self: center;
+}
+@media screen and (max-width: 600px) {
+  .form-card {
+    margin: auto;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .auth-image {
+    width: 100%;
+  }
+  .form {
+    width: 100%;
+    }
+} 

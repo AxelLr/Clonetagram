@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import Post from '../../components/posts/post/Post'
+import Post from '../../components/post/Post'
 import CommentsList from '../../components/commentlist/CommentsList'
 // REDUX
-import { getPost, getPostComments } from '../../redux/actions/DataActions'
-import { getConnectedUser } from '../../redux/actions/UserActions'
+import { getPost } from '../../redux/actions/PostsActions'
+import { getPostComments } from '../../redux/actions/CommentsActions' 
+import { getConnectedUser } from '../../redux/actions/AuthenticationActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { ON_SINGLE_POST, CLOSE_SINGLE_POST } from '../../redux/reducers/types'
 // MUI
@@ -15,7 +16,7 @@ export default function FullPost(props) {
 
     const dispatch = useDispatch()
     const selectedPost = useSelector(state => state.data.selectedPost)
-    const comments = useSelector(state => state.data.comments)
+    const comments = useSelector(state => state.comments.comments)
     const loading = useSelector(state => state.UI.loading)
 
     useEffect(() => {

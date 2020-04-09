@@ -1,63 +1,62 @@
 import React,{ useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import ProfilePosts from '../../components/posts/profileposts/ProfilePosts'
-import ProfileImg from '../../components/profile-img/ProfileImg'
-import AddPost from '../../components/posts/addpost/AddPost'
-import EditDetails from '../../components/editdetails/EditDetails'
-import HandleFollow from '../../components/handleFollow/HandleFollow'
-import SubsFollowersList from '../../components/subs-followers-list/SubsFollowersList'
-import noProfileImg from '../../images/noprofileimg2.png'
+// COMPONENTS
+import ProfilePosts from './components/profile-posts/ProfilePosts'
+import ProfileImg from './components/ProfileImg'
+import AddPost from '../../components/addpost/AddPost'
+import HandleFollow from './components/HandleFollow'
+import SubsFollowersList from './components/SubsFollowersList'
+import EditAccountDetails from './components/edit-account-details/EditAccountDetails'
+import PrivateAccountSign from './components/PrivateAccountSign'
+// IMAGE
+import noProfileImg from '../../util/images/noprofileimg2.png'
 // REDUX
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserPosts } from '../../redux/actions/DataActions'
-import { getUserProfile, getConnectedUser } from '../../redux/actions/UserActions'
+import { getUserProfile } from '../../redux/actions/UserActions'
 // MUI
 import Button from '@material-ui/core/Button'
 import HomeIcon from '@material-ui/icons/Home'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import Skeleton from '@material-ui/lab/Skeleton'
 
 export default function Profile(props) {
-
-    const [userProps, setUserProps ] = useState(true)
-    const [ open, setOpen ] = useState(false)
-
+    
     const dispatch = useDispatch()
     const user_id = props.match.params.id
 
-    const loading = useSelector(state => state.UI.loading)
-    const loadingProfile = useSelector(state => state.UI.loadingProfile)
+    const [showingFollowers, setShowingFollowers ] = useState(true)
+    const [ loadingProfile, setLoadingProfile ] = useState(false)
+    const [ open, setOpen ] = useState(false)
+
     const connectedUser = useSelector(state => state.user.loggedUser)
-    const userProfile = useSelector(state => state.data.selectedProfile)
+    const userProfile = useSelector(state => state.profile.profile)
+
     const { subscriptions, followers, description, profileImg, username } = userProfile
-    const userPosts = useSelector(state => state.data.selectedPosts)
 
+    let isLoggedUser = connectedUser._id === user_id
+  
     useEffect(() => {
-    dispatch(getConnectedUser())
-    dispatch(getUserProfile(user_id))
-    dispatch(getUserPosts(user_id))
-        
+        dispatch(getUserProfile(user_id, setLoadingProfile))   
     }, [dispatch, user_id])
-
-     // AGREGAR ELIMINAR DATOS DEL PERFIL AL CERRAR EL COMPONENTE
 
     const setFollowers = () => {
     setOpen(true)
-    setUserProps(true)
+    setShowingFollowers(true)
     }
 
     const setSubscriptions = () => {
         setOpen(true)
-        setUserProps(false)
+        setShowingFollowers(false)
     }
-   
+
+    let hasPermissions = (followers && followers.find(foll => foll.user_id === user_id)) || !userProfile.private 
+  
     return (
         <div className='profile-container'>
             <Link to='/Home'>
                < HomeIcon style={{color: '#e5e5e5', margin: 25, fontSize: 40}} />
             </Link >
               
-            { connectedUser._id === user_id && < AddPost /> }
+            { isLoggedUser && < AddPost /> }
             <div className='profile-data'>
                 <div className='data-container'>
 
@@ -66,42 +65,48 @@ export default function Profile(props) {
                   <img src={noProfileImg} alt='loading profile' width={170} height={170} style={{cursor: 'pointer'}}/>
                 </div>
             
-            : < ProfileImg src={profileImg} user_id={user_id} connectedUser={connectedUser._id} />
+            : < ProfileImg src={profileImg} isLoggedUser={isLoggedUser} />
             } 
                 <div className='profile-info'>
-                        <span style={{display: 'flex', alignItems: 'flex-end' }}> <h1> {loadingProfile ? < Skeleton width={350} animation="wave" /> : <div> {username} </div> }  </h1> { connectedUser._id !== user_id &&  < HandleFollow userProfile={userProfile} connectedUser={connectedUser} /> } </span> 
+                        <span style={{display: 'flex', alignItems: 'flex-end' }}> <h1>
+                         { loadingProfile ? < Skeleton width={350} animation="wave" /> : <div> {username} </div> } 
+                         </h1> { connectedUser._id !== user_id && !loadingProfile && < HandleFollow userProfile={userProfile} connectedUser={connectedUser} /> } </span> 
                         <p>  
                         { loadingProfile ? 
                         <div> 
                             < Skeleton width={350} animation="wave" />
                             < Skeleton width={350} animation="wave" />
-                        </div> : 
+                        </div> 
+
+                        : 
+
+                        <div> { description && description } </div> } </p>
                         
-                        <div>{description && description } </div> } </p>
-                        
-                        <div className='profile-button-container'> 
+                        <div className='profile-button-container'>
+                        { !loadingProfile &&
+                         <>
                             <Button  
                                 variant="contained"
                                 color="primary"
-                                style={{margin: '25px auto 25px auto', background: '#e5e5e5', color: 'black'}}onClick={setFollowers} >  { followers && followers.length } Seguidores </Button>
+                                style={{margin: '25px auto 25px auto', background: '#e5e5e5', color: 'black'}}onClick={hasPermissions && setFollowers} >  { followers && followers.length } Seguidores 
+                             </Button>
                             <Button 
                                 variant="contained"
                                 color="primary"
-                                style={{margin: '25px auto 25px auto', background: '#e5e5e5', color: 'black'}} onClick={setSubscriptions}> { subscriptions && subscriptions.length } Seguidos </Button>
-
-                            < SubsFollowersList userProps={userProps} open={open} setOpen={setOpen} userList={userProps ? followers : subscriptions } />
+                                style={{margin: '25px auto 25px auto', background: '#e5e5e5', color: 'black'}} onClick={hasPermissions && setSubscriptions}> { subscriptions && subscriptions.length } Seguidos
+                            </Button>
+                         </>
+                        }
+                            < SubsFollowersList showingFollowers={showingFollowers} open={open} setOpen={setOpen} userList={showingFollowers ? followers : subscriptions } />
                          </div>     
                     </div>
-                    {connectedUser._id === user_id &&
-                    < EditDetails user_id={user_id} description={description} />
-                    }
+                    { isLoggedUser && <EditAccountDetails connectedUser={connectedUser} description={description} /> }
                 </div>   
+                
             </div>
-            <div className='profile-posts-container'> 
-           
-           { loading ? <div style={{display: 'flex', width: '100%', height: '20vh'}}> <CircularProgress style={{margin: 'auto'}} size={60} /> </div> :  <ProfilePosts posts={userPosts} /> } 
-            </div>
-         
+            <div className='profilePosts-container'> 
+            { !hasPermissions && !loadingProfile ? <PrivateAccountSign /> : <ProfilePosts user_id={user_id} /> } 
+           </div>        
         </div>
     )
 }

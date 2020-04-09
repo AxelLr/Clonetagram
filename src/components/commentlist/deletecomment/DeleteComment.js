@@ -1,6 +1,6 @@
 import React from 'react'
 // REDUX
-import { deleteComment } from '../../../redux/actions/DataActions'
+import { deleteComment } from '../../../redux/actions/CommentsActions'
 import { useDispatch } from 'react-redux'
 // MUI
 import ToolTip from '@material-ui/core/Tooltip'

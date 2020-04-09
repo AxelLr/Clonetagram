@@ -1,14 +1,12 @@
-import React,{ Fragment } from 'react'
-import { HashRouter, Switch, Route } from 'react-router-dom'
+import React from 'react'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
-//Auth Route
-import ProtectedRoute from './routes/AuthRoute'
-import RestrictedRoute from './routes/RestrictedRoutes'
+// ROUTES
+import ProtectedRoute from './hoc/ProtectedRoutes'
+import RestrictedRoute from './hoc/RestrictedRoutes'
 // REDUX
-import { AUTHENTICATED } from './redux/reducers/types'
-import { logOutUser } from './redux/actions/UserActions'
-import { useSelector, useDispatch } from 'react-redux'
+import { logOutUser } from './redux/actions/AuthenticationActions'
+import { useDispatch } from 'react-redux'
 //PAGES
 import Register from './pages/register/Register'
 import Home from './pages/home/Home'
@@ -16,39 +14,53 @@ import Login from './pages/login/Login'
 import FullPost from './pages/fullpost/FullPost'
 import Profile from './pages/profile/Profile'
 import NotFound from './pages/notfound/NotFound'
+import Redirecting from './pages/Redirecting/Redirecting'
+import ResetPassword from './pages/reset-password/ResetPassword'
+// ACTIONS
+import { getConnectedUser } from './redux/actions/AuthenticationActions'
+import decodeToken from './util/jwtDecode'
+// TYPES
+import { AUTHENTICATED } from './redux/reducers/types'
 
+ function App({ history }) {
 
-export default function App() {
-
-  const authenticated = useSelector(state => state.user.authenticated)
+  axios.defaults.baseURL = 'http://localhost:5000/api'
+  
+// 'https://clonetagram.herokuapp.com/api'
 
   const dispatch = useDispatch()
 
   let token = localStorage.getItem('x-auth-token')
 
   if(token) {    
-  const decodedToken = jwtDecode(token)
+
+  const { decoded, invalidToken } = decodeToken(token)
   axios.defaults.headers.common['Authorization'] = token   
-  dispatch({ type: AUTHENTICATED })
 
-    if(decodedToken.exp * 1000 < Date.now()) {
-    dispatch(logOutUser()) 
-    }
-  }
+    if(!invalidToken) { 
+      dispatch({type: AUTHENTICATED })
+      dispatch(getConnectedUser(history))
+      decoded.exp * 1000 < Date.now() && dispatch(logOutUser()) 
+    } 
+  } 
 
+  // RESTRICTED: RUTAS INACCESIBLES UNA VEZ AUTENTICADO
+  // PROTECTED: RUTAS INACCESIBLES AL NO ESTAR AUTENTICADO
   return (
-    <Fragment> 
-      <HashRouter>
+    <> 
+        {/* ACA VAN LOS CHATS PRIVADOS */}
         <Switch>
-          <RestrictedRoute exact path='/Register' authenticated={authenticated} component={Register} />
-          <ProtectedRoute exact path="/Home"      authenticated={authenticated} component={Home} />
-          <RestrictedRoute exact path='/'         authenticated={authenticated} component={Login} />
-          <ProtectedRoute exact path='/users/:id' authenticated={authenticated} component={Profile} />
-          <ProtectedRoute exact path='/posts/:id' authenticated={authenticated} component={FullPost} />
+          <RestrictedRoute exact path='/Register' component={Register} />
+          <ProtectedRoute exact path="/Home"       component={Home} />
+          <RestrictedRoute exact path='/'          component={Login} />
+          <ProtectedRoute exact path='/users/:id'  component={Profile} />
+          <ProtectedRoute exact path='/posts/:id'  component={FullPost} />
+          <RestrictedRoute exact path='/redirecting/:token' component={Redirecting} />
+          <RestrictedRoute exact path='/resetPassword/:token' component={ResetPassword} />
           <Route exact path='*' component={NotFound} /> 
         </Switch>  
-      </HashRouter>
-    </Fragment>
-  );
+    </>
+  )
 }
 
+export default withRouter(App)
