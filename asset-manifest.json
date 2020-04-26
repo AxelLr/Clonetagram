@@ -1,24 +1,26 @@
 {
   "files": {
-    "main.css": "/Clonetagram/static/css/main.dcf657cb.chunk.css",
-    "main.js": "/Clonetagram/static/js/main.486cdda0.chunk.js",
-    "main.js.map": "/Clonetagram/static/js/main.486cdda0.chunk.js.map",
+    "main.css": "/Clonetagram/static/css/main.4336f3b9.chunk.css",
+    "main.js": "/Clonetagram/static/js/main.e2087026.chunk.js",
+    "main.js.map": "/Clonetagram/static/js/main.e2087026.chunk.js.map",
     "runtime-main.js": "/Clonetagram/static/js/runtime-main.6e872dba.js",
     "runtime-main.js.map": "/Clonetagram/static/js/runtime-main.6e872dba.js.map",
-    "static/js/2.1f74a6c0.chunk.js": "/Clonetagram/static/js/2.1f74a6c0.chunk.js",
-    "static/js/2.1f74a6c0.chunk.js.map": "/Clonetagram/static/js/2.1f74a6c0.chunk.js.map",
+    "static/js/2.6036733c.chunk.js": "/Clonetagram/static/js/2.6036733c.chunk.js",
+    "static/js/2.6036733c.chunk.js.map": "/Clonetagram/static/js/2.6036733c.chunk.js.map",
     "index.html": "/Clonetagram/index.html",
-    "precache-manifest.f77277be188ceaaa8ad1061af695d951.js": "/Clonetagram/precache-manifest.f77277be188ceaaa8ad1061af695d951.js",
+    "precache-manifest.afd89eed0eed2a905e49d85e527ef9b8.js": "/Clonetagram/precache-manifest.afd89eed0eed2a905e49d85e527ef9b8.js",
     "service-worker.js": "/Clonetagram/service-worker.js",
-    "static/css/main.dcf657cb.chunk.css.map": "/Clonetagram/static/css/main.dcf657cb.chunk.css.map",
-    "static/js/2.1f74a6c0.chunk.js.LICENSE": "/Clonetagram/static/js/2.1f74a6c0.chunk.js.LICENSE",
+    "static/css/main.4336f3b9.chunk.css.map": "/Clonetagram/static/css/main.4336f3b9.chunk.css.map",
+    "static/js/2.6036733c.chunk.js.LICENSE": "/Clonetagram/static/js/2.6036733c.chunk.js.LICENSE",
+    "static/media/googleLogo.webp": "/Clonetagram/static/media/googleLogo.cc4a562f.webp",
     "static/media/image-preview.png": "/Clonetagram/static/media/image-preview.df803060.png",
+    "static/media/landing-image.jpg": "/Clonetagram/static/media/landing-image.5c621457.jpg",
     "static/media/noprofileimg2.png": "/Clonetagram/static/media/noprofileimg2.a77a9fc1.png"
   },
   "entrypoints": [
     "static/js/runtime-main.6e872dba.js",
-    "static/js/2.1f74a6c0.chunk.js",
-    "static/css/main.dcf657cb.chunk.css",
-    "static/js/main.486cdda0.chunk.js"
+    "static/js/2.6036733c.chunk.js",
+    "static/css/main.4336f3b9.chunk.css",
+    "static/js/main.e2087026.chunk.js"
   ]
 }
