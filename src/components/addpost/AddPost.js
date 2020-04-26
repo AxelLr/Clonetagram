@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React,{ useState } from 'react'
 // REDUX
-import { CLEAR_ERROR } from '../../redux/reducers/types'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { newPost } from '../../redux/actions/PostsActions'
 // MUI 
 import AddBoxIcon from '@material-ui/icons/AddBox'
@@ -18,61 +17,48 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 export default function AddPost() {
 
     const dispatch = useDispatch()
-    const uploading  = useSelector(state => state.UI.uploading)
-    const stateErrors = useSelector(state => state.UI.errors)
 
     const [ file, setFile ] = useState('')
     const [image, setImage ] = useState('')
     const [content, setContent ] = useState('')
     const [open, setOpen] = useState(false)
     const [errors, setErrors ] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        setErrors(stateErrors)
-    }, [stateErrors])
-    
     const selectFile = (e) =>  {
         e.preventDefault()
         setFile(e.target.files[0])
-
-        if (e.target.files[0]) { 
-            setImage(URL.createObjectURL(e.target.files[0]))
-        } else {
-            setImage('')
-        }
+        e.target.files[0] ? setImage(URL.createObjectURL(e.target.files[0])) : setImage('')    
     }
 
     const pickFile = (e) => {
         e.preventDefault()
-        setErrors(' ')
+        setErrors('')
         const button = document.getElementById('file-input')
         button.click()
     }
     
-    const handleOpen = () => {
-        setOpen(true)
-        setImage('')
-        setContent('')
-        setErrors('')
-        dispatch({type: CLEAR_ERROR})
-    }
-
+    const handleOpen = () => setOpen(true)
+   
     const handleClose = () => {
         setOpen(false)
         setImage('')
         setContent('')
         setErrors('')
-        dispatch({type: CLEAR_ERROR})
     }
     
     const uploadPost = () => {
-
         if(image) {
+           
+            const fileType = file.name.split('.').pop()
+
+            if(fileType !== ('jpg' || 'jpeg')) return setErrors('Formato de imágen inválido. Solo jpg o jpeg.')
+            
             let formData = new FormData()
             formData.append('image', file, file.name) 
             formData.append('description', content) 
-           dispatch(newPost(formData, setOpen))
-           setErrors('')
+            dispatch(newPost(formData, setOpen, setLoading, setErrors))
+            setErrors('')
         } else {
             setErrors('Debes seleccionar una imágen primero')
         }
@@ -90,10 +76,18 @@ export default function AddPost() {
                 <DialogContent>
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         
-                        <input hidden='hidden' id='file-input'
-                            type='file' placeholder='select an image' onChange={selectFile} />
-                            {image ? <img src={image} width={400} style={{margin: 'auto'}} height={400} alt='new post' /> 
-                            : <img src={imagePreview} width={250} style={{margin: 'auto'}} height={250} alt='preview' />  }
+                        <input 
+                            hidden='hidden' 
+                            id='file-input'
+                            type='file' 
+                            placeholder='select an image' 
+                            onChange={selectFile}
+                        />
+
+                        { image ?
+                            <img src={image} width={400} style={{margin: 'auto'}} height={400} alt='new post' /> 
+                        :   <img src={imagePreview} width={250} style={{margin: 'auto'}} height={250} alt='preview' /> 
+                        }
                         
                         <Button onClick={pickFile} style={{marginTop: 30}} variant='outlined' color="primary">
                             Seleccionar Imágen
@@ -116,15 +110,17 @@ export default function AddPost() {
                 </DialogContent>
 
                 <DialogActions>
-            <Button disabled={uploading} onClick={uploadPost} variant='contained' color="primary">
-              Publicar!     { uploading && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
-            </Button>
-            <Button onClick={handleClose} variant='contained' style={{backgroundColor: 'red'}} color="secondary">
-              Cancelar
-            </Button>
-            
-          </DialogActions>
-        </Dialog>
+                        
+                    <Button disabled={loading || errors} onClick={uploadPost} variant='contained' color="primary">
+                        Publicar! { loading && <CircularProgress style={{marginLeft: 15}} size={30} /> } 
+                    </Button>
+
+                    <Button onClick={handleClose} variant='contained' style={{backgroundColor: 'red'}} color="secondary">
+                        Cancelar
+                    </Button>
+
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

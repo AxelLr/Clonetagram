@@ -1,13 +1,14 @@
 .fullPost-container { 
-    height: 100vh;
     min-height: 600px;
-    background: #e5e5e5;
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    padding: 100px 150px;
 }
 
-.fullPost-content-container {
-    width: 80%;
-    margin: auto;
-    display: flex;
-   justify-content: center;
+@media screen and (max-width: 1024px) {
+    .fullPost-container {
+        padding: 100px 10px;
+    }
+    
 }

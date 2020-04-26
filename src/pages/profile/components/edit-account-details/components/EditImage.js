@@ -1,4 +1,4 @@
-import React,{ useState } from 'react'
+import React from 'react'
 // MUI
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -11,9 +11,6 @@ import { useDispatch } from 'react-redux'
 import { editProfileImage } from '../../../../../redux/actions/AuthenticationActions'
 
 export default function EditImage({ open, setOpen }) {
-
-    const [ loading, setLoading ] = useState(false)
-
     const dispatch = useDispatch()
 
     const selectFile = (e) =>  {
@@ -25,8 +22,7 @@ export default function EditImage({ open, setOpen }) {
         console.log(formData)
    
         if(formData) {
-            setLoading(true)
-            dispatch(editProfileImage(formData, setLoading))
+            dispatch(editProfileImage(formData))
             setOpen(false)
         }
     }
@@ -39,7 +35,7 @@ export default function EditImage({ open, setOpen }) {
 
     return (
         <div>
-              <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm" >
+            <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm" >
                 <DialogTitle> Cambiar foto de perfil </DialogTitle>
 
                 <DialogContent>
@@ -53,15 +49,14 @@ export default function EditImage({ open, setOpen }) {
                         </Button>
 
                     </form>
-
                 </DialogContent>
 
                 <DialogActions>
-            <Button onClick={() => setOpen(false)} variant='contained' color="secondary">
-              Cancelar
-            </Button>
-          </DialogActions>
-        </Dialog>
+                    <Button onClick={() => setOpen(false)} variant='contained' color="secondary">
+                        Cancelar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

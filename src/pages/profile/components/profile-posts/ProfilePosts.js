@@ -13,7 +13,7 @@ export default function ProfilePosts({ user_id }) {
 
     useEffect(() => {
         dispatch(getUserPosts(user_id))    
-    }, [dispatch])
+    }, [dispatch, user_id])
 
     return (
         <div className='profilePosts-grid'>

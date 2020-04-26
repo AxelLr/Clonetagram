@@ -15,7 +15,7 @@ function Redirecting({ match, history }) {
         setToken(match.params.token)
         dispatch(getConnectedUser(history))
      } 
- }, [])    
+ }, [dispatch, history, match.params.token])    
 
     return (
         <div>

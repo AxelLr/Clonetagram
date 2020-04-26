@@ -1,13 +1,14 @@
-import { CLEAN_POSTS,
+import { CLEAR_POSTS,
          GET_ALL_POSTS, 
          SET_SELECTED_POSTS, 
          SET_NEW_POST,
          DELETE_POST,
          SET_SUBSCRIPTIONS_POSTS, 
-         SET_USERS, SET_POST,
+         SET_POST,
          SET_LIKES,
          SET_DISLIKE, 
-         SET_NEW_SUBSCRIPTIONS_POSTS } from './types'
+         SET_NEW_SUBSCRIPTIONS_POSTS, 
+         SET_NEW_IMAGE } from './types'
 
 const initialState = {
     numberOfPosts : '',
@@ -55,16 +56,10 @@ export default function (state = initialState, action) {
                 ...state,
                 allPosts: [ ...state.allPosts, ...action.payload ] 
             }
-        case CLEAN_POSTS:
+        case CLEAR_POSTS:
             return {
                 ...state,
                 allPosts: []
-            }
-        //   
-        case SET_USERS:
-            return {
-                ...state,
-                usersList: [...action.payload ]
             }
         case SET_POST:
             return {
@@ -73,7 +68,8 @@ export default function (state = initialState, action) {
             }   
         case SET_LIKES:
         case SET_DISLIKE: 
-            return { ...state,
+            return {
+                 ...state,
              allPosts: state.allPosts.map(post => {
                 if (post._id === action.payload._id) {
                   return {...post, likes: [...action.payload.likes]}
@@ -88,6 +84,16 @@ export default function (state = initialState, action) {
              }),
              selectedPost: {...state.selectedPost, likes: [...action.payload.likes]}
             }   
+        case SET_NEW_IMAGE:
+            return {
+                ...state,
+                selectedPosts: state.selectedPosts.map(post => { 
+                    if(post.userRef._id === action.payload.id) {
+                        return { ...post, userRef: { ...post.userRef, profileImg: action.payload.profileImage } }
+                    }
+                    return post
+                })
+            }
         default: return state
     }
 }

@@ -8,7 +8,14 @@ import {
     CLEAR_ERRORS, 
     CHANGE_PRIVACY,
     SET_PASSWORD_AS_FALSE,
-    SET_PASSWORD_AS_TRUE
+    SET_PASSWORD_AS_TRUE,
+    SET_USER_SOCKET,
+    SET_UPDATED_USERS,
+    SET_NEW_IMAGE,
+    DELETE_REQUEST,
+    FOLLOW_USER,
+    UNFOLLOW_USER,
+    ADD_REQUEST
 } from './types'
 
 const initialState = {
@@ -16,7 +23,8 @@ const initialState = {
     authenticated: false,
     userHasPassword: null,
     loading: false,
-    errors: '' 
+    errors: '',
+    userSocket: ''
 }
 
 export default function (state = initialState, action) {
@@ -72,6 +80,52 @@ export default function (state = initialState, action) {
                 ...state,
                 loggedUser: { ...state.loggedUser, private: !state.loggedUser.private }
             }
+        case SET_USER_SOCKET:
+            return {
+                ...state,
+                userSocket: action.payload
+            }
+        case SET_UPDATED_USERS: 
+            return {
+                ...state,
+                loggedUser: { ...state.loggedUser, ...action.payload.follower }
+            }
+        case SET_NEW_IMAGE: 
+            return {
+                ...state,
+                loggedUser: { ...state.loggedUser, profileImg: action.payload.profileImage }
+            }
+        case DELETE_REQUEST: 
+            return {
+                ...state,
+                loggedUser: { ...state.loggedUser, followUpRequests: state.loggedUser.followUpRequests.filter(req => req.follower_id._id !== action.payload)}
+            }
+        case FOLLOW_USER: 
+        let { _id } = action.payload.userProfile
+            return {
+                ...state,
+                loggedUser: { ...state.loggedUser, subscriptions: [ { user_id: { _id  }} , ...state.loggedUser.subscriptions ]}
+            }
+        case UNFOLLOW_USER:
+            return {
+                ...state,
+                loggedUser: { ...state.loggedUser, subscriptions: state.loggedUser.subscriptions.filter(sub => sub.user_id._id !== action.payload.user_id) }
+            }
+        case ADD_REQUEST: {
+            console.log(action.payload)
+         let { sender, senderName, senderAvatar, createdAt } = action.payload
+
+         let newRequest = {
+             _id: sender,
+             username: senderName,
+             profileImg: senderAvatar,
+             createdAt
+         }
+            return {
+                ...state,
+                loggedUser: {...state.loggedUser, followUpRequests: [ { follower_id: newRequest }, ...state.loggedUser.followUpRequests]}
+            }
+        }
         default: return state
     }
 }

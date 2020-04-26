@@ -1,4 +1,4 @@
-import React,{ Fragment } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 // MUI
 import Dialog from '@material-ui/core/Dialog'
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     nested: {
       paddingLeft: theme.spacing(4),
     },
-  }));
+  }))
 
 export default function SubsFollowersList({ open, userList = [], setOpen, showingFollowers }) {
 
@@ -41,18 +41,18 @@ export default function SubsFollowersList({ open, userList = [], setOpen, showin
 
                  { userList.map((user, key) =>  
 
-                    <Fragment key={key}>
-                        <Link onClick={() => setOpen(false)} style={{textDecoration: 'none'}} to={`/users/${user.user_id}`} >
+                    <div key={key}>
+                        <Link onClick={() => setOpen(false)} style={{textDecoration: 'none'}} to={`/users/${user.user_id._id}`} >
                             <ListItem button className={classes.nested} >
                                 <ListItemAvatar>
                                     <Avatar
-                                        src={user.profileImg}
+                                        src={user.user_id.profileImg}
                                     />
                                 </ListItemAvatar>
-                                <ListItemText secondary={user.username} />
+                                <ListItemText secondary={user.user_id.username} />
                             </ListItem>
                         </Link>
-                    </Fragment>                   
+                    </div>                   
                  )} 
                 </List>
             </div>

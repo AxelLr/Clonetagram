@@ -48,7 +48,7 @@ import { logOutUser } from '../../../../redux/actions/AuthenticationActions'
         MenuListProps={{ disablePadding: false}}
         getContentAnchorEl={null}
         anchorOrigin={{ vertical: "center", horizontal: "left" }}
-        transformOrigin={{ vertical: "start", horizontal: "right" }}
+        transformOrigin={{ horizontal: "right" }}
         anchorEl={open}
         keepMounted
         open={Boolean(open)}

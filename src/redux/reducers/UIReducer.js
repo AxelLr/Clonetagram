@@ -1,42 +1,24 @@
-import { SET_LOADED, SET_LOADING, SET_ERROR, CLEAR_ERROR, 
-    CLOSE_SINGLE_POST, DELETING, DELETED,
-     ON_SINGLE_POST, UPLOADING, UPLOADED, LOADING_SUB, LOADED_SUB, LOADING_PROFILE, PROFILE_LOADED } from './types'
+import {CLOSE_SINGLE_POST,
+        ON_SINGLE_POST,
+        ON_HOME,
+        ON_EXPLORE,
+        FOCUS_OFF,
+        CHANGING_PROFILE_IMAGE,
+        PROFILE_IMAGE_CHANGED,
+        OPEN_MENU,
+        CLOSE_MENU
+     } from './types'
 
 const initialState = {
     loading: false,
-    errors: '',
     onSinglePost: false,
-    uploading: false,
-    deleting: false,
-    loadingSubscription: false,
-    loadingProfile: false
+    onHome: null,
+    changingProfileImage: false,
+    openMenu: false
 }
 
 export default function(state = initialState, action) {
     switch(action.type) {
-        default:
-             return state
-    case SET_LOADING: 
-        return {
-            ...state,
-            loading: true
-        }
-    case SET_LOADED:
-        return {
-            ...state,
-            loading: false
-        }
-    case SET_ERROR:
-        console.log(action.payload)
-        return {
-            ...state,
-            errors: action.payload
-        }
-    case CLEAR_ERROR:
-        return {
-            ...state,
-            errors: ''
-        }
     case ON_SINGLE_POST:
         return {
             ...state,
@@ -47,45 +29,43 @@ export default function(state = initialState, action) {
             ...state,
             onSinglePost: false
         }
-    case UPLOADING: 
+    case ON_HOME: 
         return {
             ...state,
-            uploading: true
+            onHome: true
         }
-    case UPLOADED: 
+    case ON_EXPLORE:
         return {
             ...state,
-            uploading: false
+            onHome: false
         }
-    case DELETING: 
+    case FOCUS_OFF: 
         return {
             ...state,
-            deleting: true
+            onHome: null
         }
-    case DELETED: 
+    case CHANGING_PROFILE_IMAGE:
         return {
             ...state,
-            deleting: false
+            changingProfileImage: true
         }
-    case LOADING_SUB:
+    case PROFILE_IMAGE_CHANGED:
         return {
             ...state,
-            loadingSubscription: true
+            changingProfileImage: false
         }
-    case LOADED_SUB:
+    case OPEN_MENU:
+        console.log('WORKINGs')
         return {
             ...state,
-            loadingSubscription: false
+            openMenu: true
         }
-    case LOADING_PROFILE:
+    case CLOSE_MENU:
         return {
             ...state,
-            loadingProfile: true
+            openMenu: false
         }
-    case PROFILE_LOADED:
-        return {
-            ...state,
-            loadingProfile: false
-        }
+    default: return state
     }
+
 }

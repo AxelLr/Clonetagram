@@ -12,19 +12,10 @@
         columns: 1fr;
     }  
 }
-.allPosts-container-dos {
-    width: 100%;
-    padding: 50px;
-    display: grid;
-    column-gap: 10px;
-    row-gap: 20px;
-    grid-template: {
-        columns: repeat(auto-fill, minmax(400px, 1fr));
-        rows: repeat(auto, 1fr); 
-    }  
 
-    h1 {
-        font-family: 'Open Sans';
-        color: #757575;
+@media screen and (max-width: 1024px) {
+    .allPosts-container {
+        width: 90%;
+        padding: 0;
     }
 }

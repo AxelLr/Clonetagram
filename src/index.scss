@@ -3,11 +3,10 @@
 @import './pages/home/components/posts/Posts';
 @import './components/addpost/AddPost';
 @import './pages/fullpost/FullPost';
-@import './pages/profile/components/profile-posts/ProfilePosts';
-@import './pages/login/Login';
 @import './pages/notfound/NotFound';
-@import './pages/home/components/posts/components/all-posts/pagination/Pagination';
-
+@import './pages/explore/components/pagination/Pagination';
+@import './components/navbar/Navbar';
+@import './pages/explore/Explore';
 *{
   box-sizing:border-box;
 }
@@ -65,4 +64,14 @@ body {
   .form {
     width: 100%;
     }
-} 
+}
+@media screen and (max-height: 760px) and (max-width: 500px){
+  .auth-image {
+    display: none;
+  }
+}
+@media screen and (max-width: 1030px) and (min-width: 760px) {
+  .form-card{
+    width: 95%;
+  }
+}

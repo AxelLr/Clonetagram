@@ -13,7 +13,7 @@ import theme from './util/MuiTheme'
 import { HashRouter } from 'react-router-dom'
 
 ReactDOM.render(
-  < HashRouter> 
+  <HashRouter> 
     <ThemeProvider theme={theme}>  
       <Provider store={Store}> 
           <App /> 

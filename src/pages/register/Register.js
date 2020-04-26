@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }
 }))
 
-export default function Register(props) {
+export default function Register() {
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -36,10 +36,17 @@ export default function Register(props) {
   return (
       <Formik
               enableReinitialize
-              initialValues={{ email: '', password: '', confirmPassword: '', username: '' }}
+              initialValues={{ email: '', registerPassword: '', confirmPassword: '', username: '' }}
               validationSchema={registerSchema}
               onSubmit={(values, { setSubmitting }) => {
-                dispatch(registerUser(values, props.history, setSubmitting))
+
+                const newValues = {
+                  email: values.email,
+                  password: values.registerPassword,
+                  username: values.username
+                }
+
+                dispatch(registerUser(newValues, setSubmitting))
               }}
             >
               {({ handleSubmit, isSubmitting, errors, values, touched, handleChange, handleBlur }) => (
@@ -61,21 +68,21 @@ export default function Register(props) {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           required
-                          helperText={(errors.email && touched.email) && errors.email}
+                          helperText={(errors.email || touched.email) && errors.email}
                           label='Correo Electrónico'
                       />
                       <TextField
                         className={classes.textField}
                           variant='outlined'
-                          error={errors.password && touched.password}
-                          id='password'
-                          name='password'
+                          error={errors.registerPassword && touched.registerPassword}
+                          id='registerPassword'
+                          name='registerPassword'
                           type='password'
-                          value={values.password}
+                          value={values.registerPassword}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           required
-                          helperText={(errors.password && touched.password) && errors.password}
+                          helperText={(errors.registerPassword && touched.registerPassword) && errors.registerPassword}
                           label='Contraseña'
                       />
                       <TextField

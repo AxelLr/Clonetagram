@@ -1,17 +1,16 @@
 import React,{ useEffect, useState, useRef } from 'react'
 import Post from '../../../../../../components/post/Post'
 // REDUX
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // ACTIONS
 import { getSubscriptionsPosts } from '../../../../../../redux/actions/PostsActions'
 // MUI
 import CircularProgress from '@material-ui/core/CircularProgress'
-// CUSTOM HOOKS
 
-export default function SubscriptionsPosts({ allPosts }) {
+export default function SubscriptionsPosts() {
 
     let count = useRef(0)
-
+    const allPosts = useSelector(state => state.data.allPosts)
     const dispatch = useDispatch()
     const [trigger, setTrigger] = useState(false)
     const [fetchingSubscriptionPosts, setFetchingSubscriptionPosts] = useState(false)
@@ -23,7 +22,7 @@ export default function SubscriptionsPosts({ allPosts }) {
       return () => {
           window.removeEventListener('scroll', bottomListener)
       }
-    }, [])
+    }, [dispatch, page])
 
     useEffect(() => {
         dispatch(getSubscriptionsPosts(page, setPage, setFetchingSubscriptionPosts, count))

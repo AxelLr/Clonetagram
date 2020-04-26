@@ -38,54 +38,47 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Post(props) {
+export default function Post({ post }) {
 
   const onSinglePost = useSelector(state => state.UI.onSinglePost)
 
   const connectedUser = useSelector(state => state.user.loggedUser)
  
-  const { imageURL, description, date, userRef, _id, commentCount } = props.post
+  const { imageURL, description, date, userRef, _id, commentCount } = post
 
   const classes = useStyles()
  
   return (
-   
-    <Card elevation={8} style={{height: 670}}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label='profile-pic' className={classes.avatar}>
-            <Link to={`/users/${userRef && userRef._id}`}> <img height={50} width={50} src={ userRef && userRef.profileImg} alt='profile-pic' /> </Link>
-          </Avatar>
-        }
-        action={
-        <div> 
-          { userRef && userRef._id === connectedUser._id && < DeletePost post_id={_id}  /> }
-        </div>
-        }
-        title={userRef && userRef.username}
-        subheader={moment(date).format('LLL')}
-      />
+      <Card elevation={8}>
+          <CardHeader
+              avatar={
+                <Avatar aria-label='profile-pic' className={classes.avatar}>
+                  <Link to={`/users/${userRef && userRef._id}`}> <img height={50} width={50} src={ userRef && userRef.profileImg} alt='profile-pic' /> </Link>
+                </Avatar>
+              }
+              action={
+              <div> 
+                { userRef && userRef._id === connectedUser._id && < DeletePost post_id={_id} /> }
+              </div>
+              }
+              title={userRef && userRef.username}
+              subheader={moment(date).format('LLL')}
+          />
 
-      <img src={imageURL} style={{objectFit: 'cover', backgroundColor: '#3C3C3C'}} height={480} width={'100%'} alt='Post' /> 
-      
-      <CardActions style={{ padding: 0}} disableSpacing>
-        < HandleLikes post={props.post} /> 
-        < Link style={{textDecoration: 'none' }} to={`/posts/${_id}`}> 
-      { !onSinglePost && <IconButton> < SpeakerNotesIcon/>{commentCount} </IconButton>  }
-        </Link>
-      </CardActions>
+          <img src={imageURL} style={{objectFit: 'cover', backgroundColor: '#3C3C3C'}} height={480} width={'100%'} alt='Post' /> 
+        
+          <CardActions style={{ padding: 0 }} disableSpacing>
+            < HandleLikes post={post} /> 
+            < Link style={{textDecoration: 'none' }} to={`/posts/${_id}`}> 
+          { !onSinglePost && <IconButton> < SpeakerNotesIcon/> {commentCount} </IconButton>  }
+            </Link>
+          </CardActions>
 
-      <CardContent style={{ padding: '0px 0px 0px 12px'}}>
-        <Typography color='textSecondary' component='p'>
-        { description }
-        </Typography>
-
-        <Typography variant='body2' color='textSecondary' component='p'>
-       
-        </Typography>
-      </CardContent>
-    </Card>
-
-  
+          <CardContent style={{ padding: '0px 0px 20px 10px'}}> 
+            <Typography color='textSecondary' component='p'>
+              { description }
+            </Typography>
+          </CardContent>
+      </Card>
   )
 }

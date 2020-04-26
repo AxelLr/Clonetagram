@@ -5,3 +5,56 @@
     flex-direction: column;
     background-color: #e5e5e5;
 }
+
+.posts-container {
+    width: 100%;
+}
+
+.allPosts-container {
+    padding: 100px 60px;
+    width: 60%;
+    min-height: 100vh;
+    display: grid;
+    row-gap: 45px;
+    grid-template: {
+        columns: 1fr;
+    }  
+}
+
+.users-section {
+    position: fixed;
+    height: 100vh;
+    width: 35%;
+    right: 0;
+    background-color: #FAFAFA;
+}
+
+.user-data {
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+}
+
+
+@media screen and (max-width: 1024px) {
+
+    .users-section {
+        margin: 100px 0px 40px 0px ;
+        height: 100%;
+        position: relative;
+        width: 100%;
+        background-color: #FAFAFA;
+    }
+    .allPosts-container {
+        width: 90%;
+        padding: 0;
+        margin: auto;
+    }
+
+    .user-data {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin-top: 0px;
+    }
+}

@@ -1,5 +1,4 @@
 .profile-container {
-    min-height: 100vh;
     background: #121212;
     display: flex;
     flex-direction: column;
@@ -11,9 +10,11 @@
     width: 80%;
     display: flex;
     align-items: flex-end;
-
-
+    
     img {
+        cursor: pointer;
+        width: 170px;
+        height: 170px;
         border-radius: 50%;
     }
 }
@@ -22,7 +23,6 @@
     display: flex;
     width: 80%;
     margin: 0px auto 0px auto;
-    
 }
 .profile-info {
     width: 70%;
@@ -40,8 +40,7 @@
         margin: 20px 0px 0px 50px;
         font-style: 15px;
         font-family: 'Open Sans', sans-serif;
-        min-height: 60px;
-        max-height: 60px;
+
     }
 }
 
@@ -51,8 +50,79 @@
 }
 
 .profile-button-container {
-    display: flex;
     width: 50%;
+    padding-bottom: 20px;
     margin: auto;
-    align-items: center;
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+        min-width: 150px;
+    }
+}
+
+.profilePosts-grid {
+    width: 100%;
+    padding: 50px;
+    display: grid;
+    column-gap: 10px;
+    row-gap: 20px;
+    grid-template: {
+        columns: repeat(auto-fill, minmax(400px, 1fr));
+        rows: repeat(auto, .5fr); 
+    }  
+}
+
+.profilePosts-container {
+    min-height: 300px;
+    background-color: #e5e5e5;
+}
+
+@media screen and (max-width: 500px) {
+    .profilePosts-grid {
+        padding: 30px 0px;
+        grid-template: {
+            columns: repeat(auto-fill, minmax(300px, 1fr));
+            rows: repeat(auto, .5fr); 
+        }  
+    }
+
+    .data-container {
+        margin: 0px 5px;
+    }    
+}
+
+@media screen and (max-width: 826px) {
+    .profile-data {
+        width: 100%;
+
+        img {
+            height: 130px;
+            width: 130px;
+        }
+    }
+
+.profile-info {
+  min-width: 160px;
+  h1 {
+      margin-left: 15px;
+  }
+  p {
+      margin-left: 10px;
+  }
+}
+}
+
+@media screen and (max-width: 676px) {
+
+    .profile-button-container {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    
+        button {
+            min-width: 145px;
+        }
+    }
+
 }

@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField'
 import Card from '@material-ui/core/Card'
 // ICONS
 import FacebookIcon from '@material-ui/icons/Facebook'
+import GoogleIcon from '../../util/images/googleLogo.webp'
 // STYLES
 import { makeStyles } from '@material-ui/core/styles'
 // YUP
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }
 }))
 
-export default function Login(props) {
+export default function Login() {
 
   const [ openDialog, setOpenDialog ] = useState(false)
   const [ tryCount, setTryCount ] = useState(0)
@@ -44,7 +45,6 @@ export default function Login(props) {
 
   return (
       <Formik
-             
               initialValues={ userHasPassword === true ? { email: '', password: '' } : { email: '' } }
               validationSchema={userHasPassword === true ? loginSchema : emailCheckSchema }
               onSubmit={(values, { setSubmitting }) => {
@@ -55,7 +55,7 @@ export default function Login(props) {
               }}
             >
               {({ handleSubmit, isSubmitting, errors, values, touched, handleChange, handleBlur }) => (
-              <div  className='form-container'>
+              <div className='form-container'>
 
                 <ResetPasswordDialog 
                     open={openDialog} 
@@ -73,7 +73,7 @@ export default function Login(props) {
                       <TextField
                           variant='outlined'
                           className={classes.textField}
-                          error={errors.email && touched.email}
+                          error={errors.email || serverErrors}
                           id='email'
                           name='email'
                           type='email'
@@ -81,7 +81,7 @@ export default function Login(props) {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           required
-                          helperText={(errors.email && touched.email) && errors.email}
+                          helperText={!userHasPassword ? errors.email || serverErrors : errors.email }
                           label='Correo Electrónico'
                       />
                       { userHasPassword &&   
@@ -89,7 +89,7 @@ export default function Login(props) {
                       <TextField
                           variant='outlined'
                          
-                          error={(errors.password || touched.password) && errors.password}
+                          error={errors.password || serverErrors }
                           id='password'
                           name='password'
                           type='password'
@@ -97,11 +97,11 @@ export default function Login(props) {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           required
-                          helperText={(errors.password || touched.password) && errors.password}
+                          helperText={ errors.password || serverErrors }
                           label='Contraseña'
                       /> 
                       }
-                           { tryCount >= 1 && <p style={{fontFamily: 'Open Sans', marginTop: 20 }}> Olvidaste tu contraseña? haz click <span onClick={() => setOpenDialog(true)} style={{color: 'blue', cursor: 'pointer'}}> Aquí </span> para recuperarla. </p>} 
+                        { tryCount >= 1 && <p style={{fontFamily: 'Open Sans', marginTop: 20 }}> Olvidaste tu contraseña? haz click <span onClick={() => setOpenDialog(true)} style={{color: 'blue', cursor: 'pointer'}}> Aquí </span> para recuperarla. </p>} 
                        
                       <Button
                           disabled={isSubmitting}
@@ -109,23 +109,23 @@ export default function Login(props) {
                           onClick={handleSubmit}
                           variant='contained'
                           color='primary'
-                          style={{marginTop: 15}}
+                          style={{ margin: '10px 0px'}}
                       >
                       Iniciar Sesión
                       </Button>
                       
-                      { serverErrors && <p style={{color: 'red', fontFamily: 'Open Sans', textAlign: 'center'}}> {serverErrors} </p> }
+                      <a style={{cursor: 'pointer', textDecoration: 'none', margin: '10px 0px'}} href='https://clonetagram.herokuapp.com/api/user/login/facebook'>
+                        <Button variant='contained' color='secondary' style={{width: '100%' }} startIcon={ <FacebookIcon style={{margin: 0, padding: 0}} />}>
+                          <p style={{margin: 0, padding: 0}} > Iniciar sesión con Facebook </p>
+                        </Button>
+                      </a> 
 
-                      <a style={{cursor: 'pointer', textDecoration: 'none', margin: '10px 0px', }} href='http://localhost:5000/api/user/asd'>
-                        <Button variant='contained' color='secondary' style={{width: '100%' }}>
-                          < FacebookIcon style={{margin: 0, padding: 0}} /> <p style={{margin: '0px 0px 0px 15px', padding: 0}} > Iniciar sesión con Facebook </p>
+                      <a style={{cursor: 'pointer', textDecoration: 'none', margin: '10px 0px', }} href='https://clonetagram.herokuapp.com/api/user/login/google'>
+                        <Button variant='outlined' color='primary' style={{width: '100%'}} startIcon={ <img src={GoogleIcon} alt='google-icon' width='20' height='20'/>}>
+                          <p style={{ margin: 0, padding: 0}}> Iniciar sesión con Google </p>
                         </Button>
                       </a> 
-                      <a style={{cursor: 'pointer', textDecoration: 'none', margin: '10px 0px', }} href='http://localhost:5000/api/user/asdfg'>
-                        <Button variant='outlined' color='primary' style={{width: '100%' }}>
-                          < FacebookIcon style={{margin: 0, padding: 0}} /> <p style={{margin: '0px 0px 0px 15px', padding: 0}} > Iniciar sesión con Google </p>
-                        </Button>
-                      </a> 
+
                       <p className='auth-p'> No tienes una cuenta?
                         <Link 
                           style={{textDecoration: 'none', color: '#046B86'}} 
@@ -134,7 +134,6 @@ export default function Login(props) {
                       </p>
                     </Form>
                     <img src={landingImage} alt='landing'className='auth-image' />
-              
                 </Card>
               { isSubmitting && <LoadingAuthentication /> }
               </div>  

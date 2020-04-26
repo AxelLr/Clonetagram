@@ -1,30 +1,34 @@
-import React,{ useState } from 'react'
+import React,{ useEffect } from 'react'
 // COMPONENTS
-import HomeNavbar from './components/home-navbar/HomeNavbar'
 import Posts from './components/posts/Posts'
+import UserSection from './components/user-section/UserSection'
 import AddPost from '../../components/addpost/AddPost'
+// REDUX 
+import { useDispatch } from 'react-redux'
+// TYPES
+import { ON_HOME, CLEAR_POSTS, FOCUS_OFF} from '../../redux/reducers/types'
 
-export default function Home(props) {
+export default function Home() {
 
-    const [ handlePosts, setHandlePosts ] = useState(true)
+const dispatch = useDispatch()
+
+useEffect(() => { 
+    dispatch({type: ON_HOME })
+    return () => {
+        dispatch({type: CLEAR_POSTS })
+        dispatch({type: FOCUS_OFF })
+    }
+}, [dispatch])
 
     return (
-        <div className='home-container'>       
-             < HomeNavbar history={props.history} setHandlePosts={setHandlePosts} handlePosts={handlePosts} />
-             < Posts setHandlePosts={setHandlePosts} handlePosts={handlePosts} />
-             < AddPost />
-            { handlePosts &&
-              <div style={{ 
-                  position: 'fixed', 
-                  backgroundColor: 'red',
-                  height: '100vh', 
-                  width: '40%',
-                  justifySelf: 'flex-end',
-                  right: 0
-                    }}> NANI 
-              </div> 
-            } 
+        <div className='home-container'>     
+             <AddPost/>  
+             <UserSection /> 
+             < Posts />
+             
         </div>
     )
 }
+
+// 568 PX
 

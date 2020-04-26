@@ -6,13 +6,15 @@ import {
     LOADED,
     CLEAR_ERRORS, 
     USER_LOGGED, 
-    SET_SELECTED_PROFILE,
-    LOADED_SUB,
+    SET_NEW_IMAGE,
     SET_PASSWORD_AS_TRUE, 
-    SET_PASSWORD_AS_FALSE 
+    SET_PASSWORD_AS_FALSE, 
+    PROFILE_IMAGE_CHANGED,
+    CHANGING_PROFILE_IMAGE
 } from '../reducers/types'
 
 import axios from 'axios'
+import { sendUserId } from './SocketManager'
 
 export const setToken = (token) => {
     localStorage.setItem('x-auth-token', token)
@@ -26,8 +28,8 @@ export function getConnectedUser(history) {
                 const response = await axios.get('/users/me')
                 dispatch({type: USER_LOGGED, payload: response.data})
                 dispatch({type: LOADED})
-                dispatch({type: LOADED_SUB}) 
                 dispatch({type: AUTHENTICATED})
+                dispatch(sendUserId(response.data._id))
             } catch (err) {
                if(err.response.data.msg === 'invalid token') {
                    dispatch({ type: UNAUTHENTICATED})
@@ -38,38 +40,33 @@ export function getConnectedUser(history) {
         }
 }
 
-export function registerUser(values, history, setSubmitting) {
+export function registerUser(values, setSubmitting) {
         return async function(dispatch) {
-
-            dispatch({type: LOADING})
-
             try {
                 const response = await axios.post('/user/register', values)
-                setSubmitting(false)
-                dispatch({type: LOADED})
-                setToken(response.data.token)
-                dispatch({ type: AUTHENTICATED })
                 dispatch({type: CLEAR_ERRORS})
-                history.push('/Home')
+                setToken(response.data.token)
+                await dispatch(getConnectedUser())
+                setSubmitting(false)       
             } catch (err) {
                 dispatch({ type: SET_ERRORS, payload: err.response.data.errors })   
-                dispatch({type:LOADED})
+                setSubmitting(false)
             }  
         }
 }
 
 export function loginUser (values, setSubmitting, setOpenDialog, setTryCount) {
     return async function(dispatch) {
-
         try {
-            const response = await axios.post('/user/login', values)
-            setSubmitting(false)
+            const response = await axios.post('/user/login', values)  
             setToken(response.data.token)
-            dispatch(getConnectedUser())
-            dispatch({type: AUTHENTICATED})
-            dispatch({type: CLEAR_ERRORS})         
+            dispatch({type: CLEAR_ERRORS})   
+            await dispatch(getConnectedUser())
+         
+         
         } catch (err) {  
             setSubmitting(false)
+            dispatch({type: SET_ERRORS, payload: err.response.data.error })
             err.response.data.error === 'Credenciales incorrectas. Por favor, intenta de nuevo.' && setTryCount(state => state + 1)
             if(err.response.data.hasPassword === false) {
                 setOpenDialog(true)
@@ -81,39 +78,38 @@ export function loginUser (values, setSubmitting, setOpenDialog, setTryCount) {
 
 export function logOutUser () {
     return async function(dispatch) {
-        console.log('LOGGING OUT')
         localStorage.removeItem('x-auth-token')
         delete axios.defaults.headers.common['Authorization']
         dispatch ({ type: UNAUTHENTICATED })
     }
 }
 
-export function editProfileImage (newImage, setLoading) {
+export function editProfileImage (newImage) {
     return async function(dispatch) {
-
         try {
-         const response = await axios.put('/users/image', newImage, {
-            headers: {
-              'content-type': 'multipart/form-data'
-            }
-          })
-         dispatch({type: SET_SELECTED_PROFILE, payload: response.data})
-         setLoading(false)
+            dispatch({type: CHANGING_PROFILE_IMAGE})
+            const response = await axios.put('/users/image', newImage, {
+                headers: {
+                'content-type': 'multipart/form-data'
+                }
+            })
+            dispatch({type: SET_NEW_IMAGE, payload: response.data })
+            dispatch({ type: PROFILE_IMAGE_CHANGED })
             
         } catch (err) {
+            dispatch({type: PROFILE_IMAGE_CHANGED})
             console.log(err)
         }
     }
 }
 
-
 export function checkEmail(email, setSubmitting, setOpenDialog) {
     return async function(dispatch) {
         try {
-            
-            const response = await axios.post('/user/aaaa', email)
+            const response = await axios.post('/user/checkEmail', email)
             setSubmitting(false)
             dispatch({type: CLEAR_ERRORS})
+
             if(response.data.hasPassword) { dispatch({type: SET_PASSWORD_AS_TRUE }) } else {
                 dispatch({type: SET_PASSWORD_AS_FALSE})
                 setOpenDialog(true)
@@ -131,9 +127,9 @@ export function resetPassword(email, setHandleReset, setOpen) {
     return async function() {
         try {
            setHandleReset(state => { return { ...state, loading: true } }) 
-          const response = await axios.post('/user/forgotPassword', { email }) 
-          setHandleReset(state => { return {loading: false, success: true } }) 
-          setOpen(false)
+           await axios.post('/user/forgotPassword', { email }) 
+           setHandleReset({ loading: false, success: true }) 
+           setOpen(false)
 
         } catch (error) {
             console.log(error)
@@ -144,17 +140,14 @@ export function resetPassword(email, setHandleReset, setOpen) {
 export function getUserByToken(token, setHandleReset, history) {
     return async function() {
         try {
-
             const response = await axios.get(`/user/reset/${token}`)
-            console.log(response)
             setHandleReset({ user: response.data.email, success: true })
 
         } catch (error) {
-            if(error.response.status == '401') {
+            if(error.response.status === 401) {
                 setHandleReset({user: null, success: false })
                 setTimeout(() => history.push('/'), 1500)
             }
-            console.log(error.response)
         }
     }
 }
@@ -163,9 +156,16 @@ export function updatePassword(password, handleReset,setHandleReset, setSubmitti
     return async function() {
         try {
             await axios.patch('/user/reset/password', { password, email: handleReset.user })
-            setSubmitting(false)
+            
             setHandleReset({...handleReset, updated: true })
-            setTimeout(() => history.push('/'), 1500)
+            
+            setTimeout(() => { 
+
+                setSubmitting(false)
+                history.push('/')
+                
+            }, 1500)
+
         } catch (error) {
             console.log(error)
             setSubmitting(false)

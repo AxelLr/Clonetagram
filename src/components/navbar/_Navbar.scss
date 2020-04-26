@@ -1,0 +1,20 @@
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+}
+
+  
+.open-menu-button {
+    display: none;
+}
+
+
+@media screen and (max-width: 568px) {
+    .navbar-buttons {
+        display: none;
+    }
+    
+    .open-menu-button {
+        display: flex;
+    }
+}

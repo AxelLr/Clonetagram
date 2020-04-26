@@ -1,6 +1,6 @@
 import { GET_ALL_POSTS, SET_SELECTED_POSTS, SET_NEW_POST, DELETE_POST, SET_SUBSCRIPTIONS_POSTS,
-       SET_POST, SET_LIKES, SET_DISLIKE, SET_LOADING,
-     SET_LOADED, SET_ERROR, UPLOADING, UPLOADED, DELETING, DELETED, SET_NEW_SUBSCRIPTIONS_POSTS } from '../reducers/types'
+       SET_POST, SET_LIKES, SET_DISLIKE, 
+     SET_NEW_SUBSCRIPTIONS_POSTS } from '../reducers/types'
 import axios from 'axios'
 
 export function getAllPosts(setLoading) {
@@ -20,11 +20,8 @@ export function getAllPosts(setLoading) {
 export function getPostsFromPage (page, postsNumber) {
     return async function(dispatch) {
         try {
-            dispatch({type: SET_LOADING})
             const response = await axios.get(`/posts/?page=${page}&?postsNumber=${postsNumber}`)
             dispatch( {type: GET_ALL_POSTS, payload: response.data} )
-            dispatch({type: SET_LOADED})
-            
         } catch (err) {
             console.log(err)            
         }
@@ -42,6 +39,7 @@ export function getSubscriptionsPosts(page, setPage, setFetching, count) {
                     setFetching(false)
                     setPage(page + 1)
                     count.current = 0
+
                 } else {
                     setFetching(false)
                     count.current = 1
@@ -56,62 +54,59 @@ export function getSubscriptionsPosts(page, setPage, setFetching, count) {
 export function getUserPosts(id) {
     return async function(dispatch) {
         try {
-            dispatch({type: SET_LOADING})
             const response = await axios.get(`/posts/users/${id}`)
             dispatch( { type: SET_SELECTED_POSTS, payload: response.data })
-            dispatch({type: SET_LOADED})
-            
+
         } catch (err) {
             console.log(err)
         }
     }
 }
 
-export function newPost(data, setOpen) {
+export function newPost(data, setOpen, setLoading, setErrors) {
     return async function(dispatch) {
         try {  
-                dispatch({type: UPLOADING })
+               setLoading(true)
                 const response =  await axios.post('/posts/add', data, { headers: {
                      'content-type': 'multipart/form-data' 
                      }
                 })         
-                console.log(response.data)
-                dispatch({type: UPLOADED})
                 setOpen(false)
+                setLoading(false)
                 dispatch({ type: SET_NEW_POST, payload: response.data })
 
         } catch (err) {
-            dispatch({type: SET_ERROR, payload: err.response.data}) 
-            dispatch({type: UPLOADED})      
+            setLoading(false)
+            setErrors(err.response.data)    
+            console.log(err.response.data)
         }
     }
 }
 
-export function deletePost(postid) {
+export function deletePost(postid, setOpen, setLoading) {
     return async function(dispatch) {
         try {
-            dispatch({type: DELETING })
+            setLoading(true)
             await axios.delete(`/posts/${postid}/delete`)
             dispatch({ type: DELETE_POST, payload: postid })
-            dispatch({type: DELETED })
-            
+            setLoading(false)
+            setOpen(false)
         } catch (err) {
             console.log(err)
         }
     }
 }
 
-export function getPost(id, history) {
+export function getPost(id, history, setLoading) {
     return async function(dispatch) {
         try {
-            dispatch({type: SET_LOADING})
+            setLoading(true)
             const response = await axios.get(`/posts/post/${id}`)
             dispatch({type: SET_POST, payload: response.data})
-            dispatch({type: SET_LOADED})
-             
+            setLoading(false)
         } catch (err) {
-            if (err.response.data === 'El post no existe') { history.push('/*')}
-            console.log(err.response.data)            
+            if (err.response.status === 500) { history.push('/*')}
+            console.log(err)            
         }
     }
 }

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React,{ useEffect, useState } from 'react'
 import Post from '../../components/post/Post'
-import CommentsList from '../../components/commentlist/CommentsList'
+import CommentsList from './components/commentlist/CommentsList'
 // REDUX
 import { getPost } from '../../redux/actions/PostsActions'
 import { getPostComments } from '../../redux/actions/CommentsActions' 
-import { getConnectedUser } from '../../redux/actions/AuthenticationActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { ON_SINGLE_POST, CLOSE_SINGLE_POST } from '../../redux/reducers/types'
 // MUI
@@ -15,47 +14,27 @@ export default function FullPost(props) {
     const post_id = props.match.params.id
 
     const dispatch = useDispatch()
+    
     const selectedPost = useSelector(state => state.data.selectedPost)
     const comments = useSelector(state => state.comments.comments)
-    const loading = useSelector(state => state.UI.loading)
+
+    const [ loading, setLoading ] = useState(false)
 
     useEffect(() => {
-        dispatch(getConnectedUser())
-    }, [dispatch])
-
-    useEffect(() => { 
-    dispatch(getPost(post_id, props.history))
-    dispatch(getPostComments(post_id))   
+      dispatch(getPost(post_id, props.history, setLoading))
+      dispatch(getPostComments(post_id))  
+      dispatch({ type: ON_SINGLE_POST })  
+      return () => {
+        dispatch({ type: CLOSE_SINGLE_POST })
+      }
     }, [dispatch, post_id, props.history])
-
-    useEffect(() => {
-        dispatch({type: ON_SINGLE_POST})
-        return () => {
-          dispatch({type: CLOSE_SINGLE_POST})
-        };
-      }, [dispatch])
-    
-    useEffect(() => {
-
-        if(selectedPost === '') {
-            props.history.push('/Home')
-        }
-         
-    }, [selectedPost, props.history])
+ 
+    if(loading) return <div style={{display: 'flex', width: '100%', height: '100vh'}}> <CircularProgress style={{margin: 'auto'}} size={60} /> </div>
 
     return (
-        <div  className='fullPost-container'>
-
-        { loading ? <div style={{display: 'flex', width: '100%'}}> <CircularProgress style={{margin: 'auto'}} size={30} /> </div>
-        
-        : 
-           <div className='fullPost-content-container'>
-                <div style={{width: '50%', height: '100%'}}>
-                     <Post post={selectedPost} />
-                </div>
-                  < CommentsList comments={comments} selectedPost={selectedPost} /> 
-            </div> }
-         
-        </div>
+        <section className='fullPost-container'>       
+            <Post post={selectedPost} />
+            <CommentsList comments={comments} selectedPost={selectedPost} /> 
+        </section>
     )
 }

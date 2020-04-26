@@ -37,16 +37,18 @@ export default function ResetPassword(props) {
 
     useEffect(() => {
         dispatch(getUserByToken(props.match.params.token, setHandleReset, props.history))
-    }, [])
+    }, [props.match.params.token, setHandleReset, props.history, dispatch])
 
     if(handleReset.success === false) return <h1>El token ha expirado, volviendo al inicio.</h1>
 
     return (
         <Formik
-            initialValues={{ password: '', ConfirmPassword: '' }}
+            enableReinitialize
+            initialValues={{ registerPassword: '', confirmPassword: '' }}
             validationSchema={resetPassword}
             onSubmit={(values, { setSubmitting }) => { 
-                dispatch(updatePassword(values.password, handleReset,setHandleReset, setSubmitting, props.history))
+               console.log('submitting')
+                dispatch(updatePassword(values.registerPassword, handleReset,setHandleReset, setSubmitting, props.history))
             }}
         >
         {({ handleSubmit, isSubmitting, errors, values, touched, handleChange, handleBlur }) => (
@@ -60,21 +62,21 @@ export default function ResetPassword(props) {
                 <TextField
                     variant='outlined'
                     className={classes.textField}
-                    error={(errors.password || touched.password) && errors.password}
-                    id='password'
-                    name='password'
+                    error={errors.registerPassword || errors.confirmPassword}
+                    id='registerPassword'
+                    name='registerPassword'
                     type='password'
-                    value={values.password}
+                    value={values.registerPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     required
-                    helperText={(errors.password || touched.password) && errors.password}
+                    helperText={(errors.registerPassword || touched.registerPassword) && errors.registerPassword}
                     label='Contraseña'
                 />            
                 <TextField
                     className={classes.textField}
                     variant='outlined'
-                    error={(errors.confirmPassword || touched.confirmPassword) && errors.confirmPassword}
+                    error={errors.confirmPassword}
                     id='confirmPassword'
                     name='confirmPassword'
                     type='password'
