@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Clonetagram/static/css/main.4336f3b9.chunk.css",
-    "main.js": "/Clonetagram/static/js/main.3d4c7dad.chunk.js",
-    "main.js.map": "/Clonetagram/static/js/main.3d4c7dad.chunk.js.map",
+    "main.js": "/Clonetagram/static/js/main.b5aa3485.chunk.js",
+    "main.js.map": "/Clonetagram/static/js/main.b5aa3485.chunk.js.map",
     "runtime-main.js": "/Clonetagram/static/js/runtime-main.6e872dba.js",
     "runtime-main.js.map": "/Clonetagram/static/js/runtime-main.6e872dba.js.map",
     "static/js/2.a0a3afd6.chunk.js": "/Clonetagram/static/js/2.a0a3afd6.chunk.js",
     "static/js/2.a0a3afd6.chunk.js.map": "/Clonetagram/static/js/2.a0a3afd6.chunk.js.map",
     "index.html": "/Clonetagram/index.html",
-    "precache-manifest.9f5eb848813b9201f0d07edc76c89049.js": "/Clonetagram/precache-manifest.9f5eb848813b9201f0d07edc76c89049.js",
+    "precache-manifest.67da58495a0e20f0b67cda311d7c1da0.js": "/Clonetagram/precache-manifest.67da58495a0e20f0b67cda311d7c1da0.js",
     "service-worker.js": "/Clonetagram/service-worker.js",
     "static/css/main.4336f3b9.chunk.css.map": "/Clonetagram/static/css/main.4336f3b9.chunk.css.map",
     "static/js/2.a0a3afd6.chunk.js.LICENSE": "/Clonetagram/static/js/2.a0a3afd6.chunk.js.LICENSE",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.6e872dba.js",
     "static/js/2.a0a3afd6.chunk.js",
     "static/css/main.4336f3b9.chunk.css",
-    "static/js/main.3d4c7dad.chunk.js"
+    "static/js/main.b5aa3485.chunk.js"
   ]
 }
