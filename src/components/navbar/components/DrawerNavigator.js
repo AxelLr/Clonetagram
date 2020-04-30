@@ -52,8 +52,8 @@ export default function DrawerNavigator() {
     return (
       <Drawer style={{width: '70%'}} color='secondary' open={openMenu} onClose={() => dispatch( { type: CLOSE_MENU } )}>
         
-          <Link style={{margin: 0, padding: 0, width: '100%', height: '50%'}} onClick={() => dispatch({type: CLOSE_MENU })} to={`/users/${loggedUser._id}`}>
-            <img style={{objectFit: 'cover'}} src={loggedUser.profileImg} />
+          <Link style={{margin: 0, padding: 0, display: 'flex'}} onClick={() => dispatch({type: CLOSE_MENU })} to={`/users/${loggedUser._id}`}>
+            <img src={loggedUser.profileImg} style={{width: 100, height: 100, margin: '5px auto', borderRadius: '50%'}} />
           </Link>  
          
           <List

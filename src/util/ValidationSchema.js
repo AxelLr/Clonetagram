@@ -10,7 +10,7 @@ const registerPassword = Yup.string()
 .matches(/[a-z]/, 'Debe contener al menos una letra minúscula')
 .matches(/[A-Z]/, 'Debe contener al menos una letra mayúscula')
 
-const password = Yup.string().required('Contraseña Requerida').min(6, 'Contraseña demasiado corta.').max(18, 'Contraseña demasiado larga')
+const password = Yup.string().required('Contraseña Requerida')
 
 const confirmPassword = Yup.string().oneOf([Yup.ref('registerPassword'), null], 'Las contraseñas deben coincidir').required('Las contraseñas deben coincidir')
 
