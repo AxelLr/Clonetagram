@@ -20,5 +20,6 @@ La aplicación cuenta con funcionalidades tales como:
 * Autenticacion con Facebook / Google.
 * Password Reset.
 * Notificaciones y solicitudes en tiempo real.
+* Paginación.
 
 App Demo [Aquí](https://axellr.github.io/Clonetagram/#/).
